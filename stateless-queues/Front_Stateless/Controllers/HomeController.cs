@@ -1,32 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Front_Stateless.Models;
+using NServiceBus;
 
 namespace Front_Stateless.Controllers
 {
     public class HomeController : Controller
     {
+        private IMessageSession messageSession;
+
+        static Random random = new Random();
+
+        public HomeController(IMessageSession session)
+        {
+            messageSession = session;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult About()
+
+        [HttpPost]
+        public async Task<IActionResult> Order()
         {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            await messageSession.Send(new Order(random.Next()));
+            return View("Index");
         }
 
         public IActionResult Error()
