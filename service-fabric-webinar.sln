@@ -5,11 +5,19 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Request_Response", "request-response\Request-Response\Request_Response.sfproj", "{59F03AC4-9242-4E60-826F-9FB70C7A9B47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Front", "request-response\Front\Front.csproj", "{D85DB6FD-0D9D-4995-8CD6-897084F31993}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front", "request-response\Front\Front.csproj", "{D85DB6FD-0D9D-4995-8CD6-897084F31993}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Back", "request-response\Back\Back.csproj", "{C0F7E00B-B70E-4654-A38A-5686BD75BB86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Back", "request-response\Back\Back.csproj", "{C0F7E00B-B70E-4654-A38A-5686BD75BB86}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "request-response", "request-response", "{C67FFCBE-103A-468C-816C-E263D42A0498}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stateless-queues", "stateless-queues", "{D3795032-7A08-413B-9E66-5ED02BD5D16E}"
+EndProject
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Stateless_Queues", "stateless-queues\Stateless-Queues\Stateless_Queues.sfproj", "{89BE4C84-343E-4A0E-A5CE-03E462682B19}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front_Stateless", "stateless-queues\Front_Stateless\Front_Stateless.csproj", "{82DC225D-EE93-43D7-9E60-93980275C188}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Back_Stateless", "Back_Stateless\Back_Stateless.csproj", "{5FD49D0A-B428-4900-89E8-4AAB4F32B584}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +51,28 @@ Global
 		{C0F7E00B-B70E-4654-A38A-5686BD75BB86}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C0F7E00B-B70E-4654-A38A-5686BD75BB86}.Release|x64.ActiveCfg = Release|Any CPU
 		{C0F7E00B-B70E-4654-A38A-5686BD75BB86}.Release|x64.Build.0 = Release|Any CPU
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Debug|x64.ActiveCfg = Debug|x64
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Debug|x64.Build.0 = Debug|x64
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Debug|x64.Deploy.0 = Debug|x64
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Release|Any CPU.ActiveCfg = Release|x64
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Release|x64.ActiveCfg = Release|x64
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Release|x64.Build.0 = Release|x64
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19}.Release|x64.Deploy.0 = Release|x64
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Debug|x64.Build.0 = Debug|Any CPU
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Release|x64.ActiveCfg = Release|Any CPU
+		{82DC225D-EE93-43D7-9E60-93980275C188}.Release|x64.Build.0 = Release|Any CPU
+		{5FD49D0A-B428-4900-89E8-4AAB4F32B584}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{5FD49D0A-B428-4900-89E8-4AAB4F32B584}.Debug|x64.ActiveCfg = Debug|x64
+		{5FD49D0A-B428-4900-89E8-4AAB4F32B584}.Debug|x64.Build.0 = Debug|x64
+		{5FD49D0A-B428-4900-89E8-4AAB4F32B584}.Release|Any CPU.ActiveCfg = Release|x64
+		{5FD49D0A-B428-4900-89E8-4AAB4F32B584}.Release|x64.ActiveCfg = Release|x64
+		{5FD49D0A-B428-4900-89E8-4AAB4F32B584}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +81,9 @@ Global
 		{59F03AC4-9242-4E60-826F-9FB70C7A9B47} = {C67FFCBE-103A-468C-816C-E263D42A0498}
 		{D85DB6FD-0D9D-4995-8CD6-897084F31993} = {C67FFCBE-103A-468C-816C-E263D42A0498}
 		{C0F7E00B-B70E-4654-A38A-5686BD75BB86} = {C67FFCBE-103A-468C-816C-E263D42A0498}
+		{89BE4C84-343E-4A0E-A5CE-03E462682B19} = {D3795032-7A08-413B-9E66-5ED02BD5D16E}
+		{82DC225D-EE93-43D7-9E60-93980275C188} = {D3795032-7A08-413B-9E66-5ED02BD5D16E}
+		{5FD49D0A-B428-4900-89E8-4AAB4F32B584} = {D3795032-7A08-413B-9E66-5ED02BD5D16E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4201E608-1CD1-4A3C-90F5-F8C3402F73A3}
