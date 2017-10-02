@@ -3,5 +3,6 @@
   <Parameters>
     <Parameter Name="Back_Stateless_InstanceCount" Value="1" />
     <Parameter Name="Front_Stateless_InstanceCount" Value="1" />
+    <Parameter Name="NServiceBus_ConnectionString" Value="host=localhost" />
   </Parameters>
 </Application>
