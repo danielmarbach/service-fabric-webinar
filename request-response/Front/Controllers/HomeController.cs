@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Fabric;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Front.Models;
@@ -42,7 +43,16 @@ namespace Front.Controllers
         public async Task<IActionResult> Order()
         {
             var partitionClient = new ServicePartitionClient<OrderBackendClient>(communicationFactory, serviceUri);
-            await partitionClient.InvokeWithRetryAsync(client => client.Order(random.Next()));
+            var orderId = random.Next();
+            var response = await partitionClient.InvokeWithRetryAsync(client => client.Order(orderId));
+
+            if (response.Success || response.Errors == null) return View("Index", new SuccessModel { OrderId = orderId });
+
+            foreach (var error in response.Errors)
+            {
+                ModelState.AddModelError(error.Key, error.Value[0]);
+            }
+
             return View("Index");
         }
 

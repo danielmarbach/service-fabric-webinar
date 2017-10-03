@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Fabric;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Communication.Client;
+using Newtonsoft.Json;
 
 namespace Front
 {
@@ -25,15 +28,29 @@ namespace Front
 
         ResolvedServicePartition ICommunicationClient.ResolvedServicePartition { get; set; }
 
-        public async Task<string> Order(int orderId)
+        public async Task<OrderResponse> Order(int orderId)
         {
             using (var content = new StringContent(string.Empty))
             {
-                var response = await HttpClient.PutAsync(new Uri(Url, $"api/orders/{orderId}"), content)
+                var httpResponse = await HttpClient.PutAsync(new Uri(Url, $"api/orders/{orderId}"), content)
                     .ConfigureAwait(false);
-                return await response.Content.ReadAsStringAsync()
-                    .ConfigureAwait(false);
+
+                var errorsString = httpResponse.IsSuccessStatusCode ? null : await httpResponse.Content.ReadAsStringAsync();
+
+                return new OrderResponse
+                {
+                    Success = httpResponse.IsSuccessStatusCode,
+                    Errors = httpResponse.IsSuccessStatusCode
+                        ? null
+                        : JsonConvert.DeserializeObject<Dictionary<string, string[]>>(errorsString)
+                };
             }
+        }
+
+        public class OrderResponse
+        {
+            public bool Success { get; set; }
+            public Dictionary<string, string[]> Errors { get; set; }
         }
     }
 }
