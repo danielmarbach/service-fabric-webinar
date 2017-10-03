@@ -11,7 +11,7 @@ namespace Back.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id)
         {
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
             if(id % 2 == 0)
             {
