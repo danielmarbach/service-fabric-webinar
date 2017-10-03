@@ -6,10 +6,10 @@ namespace Back_Stateless
 {
     public class SubmitOrderHandler : IHandleMessages<SubmitOrder>
     {
-        public Task Handle(SubmitOrder message, IMessageHandlerContext context)
+        public async Task Handle(SubmitOrder message, IMessageHandlerContext context)
         {
+            await Task.Delay(2000).ConfigureAwait(false);
             ServiceEventSource.Current.Write(nameof(SubmitOrder), message);
-            return Task.CompletedTask;
         }
     }
 }
