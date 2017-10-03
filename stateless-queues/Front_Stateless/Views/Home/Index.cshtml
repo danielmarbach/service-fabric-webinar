@@ -12,3 +12,15 @@
         }
     </div>
 </div>
+<div class="row">
+    <div class="col-md-4">
+        @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+        {
+            @Html.ValidationSummary("Errors:", new { @class = "alert alert-danger" })
+        }
+        else if (@Model != null)
+        {
+            <div class="alert alert-success">Order id @Html.Raw(Model.OrderId) submitted!</div>
+        }
+    </div>
+</div>

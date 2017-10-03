@@ -26,4 +26,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Messages_Stateless\Messages_Stateless.csproj" />
+  </ItemGroup>
+
 </Project>

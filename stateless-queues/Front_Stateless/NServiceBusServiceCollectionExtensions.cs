@@ -1,5 +1,6 @@
 using System;
 using System.Fabric;
+using Messages_Stateless;
 using Microsoft.Extensions.DependencyInjection;
 using NServiceBus;
 
@@ -33,20 +34,10 @@ namespace Front_Stateless
             delayedDelivery.DisableTimeoutManager();
 
             var routing = transport.Routing();
-            routing.RouteToEndpoint(typeof(Order), "back-stateless");
+            routing.RouteToEndpoint(typeof(SubmitOrder), "back-stateless");
 
             var endpointInstance = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
             services.AddSingleton<IMessageSession>(endpointInstance);
         }
-    }
-
-    // will be moved into dedicated assembly
-    public class Order : ICommand
-    {
-        public Order(int orderNumber)
-        {
-        }
-
-        public int OrderNumber { get; private set; }
     }
 }
