@@ -12,10 +12,8 @@ namespace Front_Stateless
         {
             var endpointConfiguration = new EndpointConfiguration("front-stateless");
 
-            endpointConfiguration.AuditProcessedMessagesTo("audit");
             endpointConfiguration.UseSerialization<JsonSerializer>();
             endpointConfiguration.EnableInstallers();
-            endpointConfiguration.UsePersistence<InMemoryPersistence>();
             endpointConfiguration.SendOnly();
 
             var provider = services.BuildServiceProvider();
