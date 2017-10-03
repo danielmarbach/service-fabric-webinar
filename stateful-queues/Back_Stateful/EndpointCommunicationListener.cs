@@ -2,8 +2,10 @@
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using NServiceBus;
+using NServiceBus.Persistence.ServiceFabric;
 
 namespace Back_Stateful
 {
@@ -13,9 +15,11 @@ namespace Back_Stateful
         EndpointConfiguration endpointConfiguration;
         private StatefulServiceContext context;
         private IEndpointInstance endpointInstance;
+        private IReliableStateManager stateManager;
 
-        public EndpointCommunicationListener(StatefulServiceContext context)
+        public EndpointCommunicationListener(StatefulServiceContext context, IReliableStateManager stateManager)
         {
+            this.stateManager = stateManager;
             this.context = context;
         }
 
@@ -28,7 +32,8 @@ namespace Back_Stateful
             endpointConfiguration.UseSerialization<JsonSerializer>();
             endpointConfiguration.EnableInstallers();
 
-            endpointConfiguration.UsePersistence<InMemoryPersistence>();
+            var persistence = endpointConfiguration.UsePersistence<ServiceFabricPersistence>();
+            persistence.StateManager(stateManager);
 
             var recoverability = endpointConfiguration.Recoverability();
             recoverability.DisableLegacyRetriesSatellite();

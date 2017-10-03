@@ -17,7 +17,7 @@ namespace Back_Stateful
 
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            listener = new EndpointCommunicationListener(Context);
+            listener = new EndpointCommunicationListener(Context, StateManager);
             return new List<ServiceReplicaListener>
             {
                 new ServiceReplicaListener(context => listener)
