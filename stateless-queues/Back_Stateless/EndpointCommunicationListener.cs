@@ -71,7 +71,7 @@ namespace Back_Stateless
 
         public Task CloseAsync(CancellationToken cancellationToken)
         {
-            return endpointInstance.Stop();
+            return endpointInstance == null ? Task.CompletedTask : endpointInstance.Stop();
         }
 
         public void Abort()
