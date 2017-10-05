@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Fabric;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Front.Models;
@@ -21,8 +20,6 @@ namespace Front.Controllers
 
         private static readonly OrderBackendClientFactory communicationFactory;
 
-        static Random random = new Random();
-
         static HomeController()
         {
             serviceUri = new Uri(FabricRuntime.GetActivationContext().ApplicationName + "/Back");
@@ -34,26 +31,33 @@ namespace Front.Controllers
             communicationFactory = new OrderBackendClientFactory(new ServicePartitionResolver(() => fabricClient));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var partitionClient = new ServicePartitionClient<OrderBackendClient>(communicationFactory, serviceUri);
+
+            var orders = await partitionClient.InvokeWithRetryAsync(client => client.List());
+
+            var model = new IndexViewModel
+            {
+                Orders = orders
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Order()
         {
             var partitionClient = new ServicePartitionClient<OrderBackendClient>(communicationFactory, serviceUri);
-            var orderId = random.Next();
-            var response = await partitionClient.InvokeWithRetryAsync(client => client.Order(orderId));
+            var response = await partitionClient.InvokeWithRetryAsync(client => client.Order(new NewOrderRequest{SubmittedOn = DateTime.UtcNow}));
 
-            if (response.Success || response.Errors == null) return View("Index", new SuccessModel { OrderId = orderId });
-
-            foreach (var error in response.Errors)
+            var model = new OrderViewModel
             {
-                ModelState.AddModelError(error.Key, error.Value[0]);
-            }
+                NewOrder = response.NewOrder,
+                Errors = response.Errors
+            };
 
-            return View("Index");
+            return View(model);
         }
 
         public IActionResult Error()

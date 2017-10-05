@@ -4,7 +4,9 @@ using System.Fabric;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Front.Models;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using Newtonsoft.Json;
 
@@ -28,29 +30,33 @@ namespace Front
 
         ResolvedServicePartition ICommunicationClient.ResolvedServicePartition { get; set; }
 
-        public async Task<OrderResponse> Order(int orderId)
+        public async Task<IEnumerable<OrderModel>> List()
         {
-            using (var content = new StringContent(string.Empty))
+            var httpResponse = await HttpClient.GetAsync(new Uri(Url, "api/orders/"))
+                .ConfigureAwait(false);
+
+            var json = await httpResponse.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<List<OrderModel>>(json);
+        }
+
+        public async Task<CreateOrderResponse> Order(NewOrderRequest request)
+        {
+            using (var content = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json"))
             {
-                var httpResponse = await HttpClient.PutAsync(new Uri(Url, $"api/orders/{orderId}"), content)
+                var httpResponse = await HttpClient.PutAsync(new Uri(Url, $"api/orders/"), content)
                     .ConfigureAwait(false);
 
-                var errorsString = httpResponse.IsSuccessStatusCode ? null : await httpResponse.Content.ReadAsStringAsync();
+                var json = await httpResponse.Content.ReadAsStringAsync();
 
-                return new OrderResponse
-                {
-                    Success = httpResponse.IsSuccessStatusCode,
-                    Errors = httpResponse.IsSuccessStatusCode
-                        ? null
-                        : JsonConvert.DeserializeObject<Dictionary<string, string[]>>(errorsString)
-                };
+                return JsonConvert.DeserializeObject<CreateOrderResponse>(json);
             }
         }
 
-        public class OrderResponse
+        public class CreateOrderResponse
         {
-            public bool Success { get; set; }
-            public Dictionary<string, string[]> Errors { get; set; }
+            public OrderModel NewOrder { get; set; }
+            public List<string> Errors { get; set; }
         }
     }
 }

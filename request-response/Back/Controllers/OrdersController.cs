@@ -1,25 +1,54 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Back.Data;
+using Back.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Back.Controllers
 {
     [Route("api/[controller]")]
     public class OrdersController : Controller
     {
-        // PUT api/orders/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id)
+        public IEnumerable<Order> Orders()
         {
-            await Task.Delay(2000);
-
-            if(id % 2 == 0)
+            using (var context = new SalesDbContext())
             {
-                var state = new ModelStateDictionary();
-                state.AddModelError("Id",$"Only robots submit even Ids: {id}.");
-                return BadRequest(state);
+                return context.Orders.OrderBy(o => o.SubmittedOn);
             }
-            return Accepted();
+        }
+
+        // PUT api/orders/
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] CreateOrderRequest newOrder)
+        {
+            var order = new Order
+            {
+                SubmittedOn = newOrder.SubmittedOn,
+                CreatedOn = DateTime.UtcNow
+            };
+
+            var response = new CreateOrderResponse();
+
+            try
+            {
+                using (var context = new SalesDbContext())
+                {
+                    context.Orders.Add(order);
+
+                    await context.SaveChangesAsync();
+
+                    response.NewOrder = order;
+
+                    return Accepted(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Errors = new List<string>{ex.Message};
+                return BadRequest(response);
+            }
         }
     }
 }
