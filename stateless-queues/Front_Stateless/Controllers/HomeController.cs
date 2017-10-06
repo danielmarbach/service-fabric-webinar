@@ -15,6 +15,7 @@ namespace Front_Stateless.Controllers
 {
     public class HomeController : Controller
     {
+        static Random random = new Random();
 
         public HomeController(IMessageSession session, FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
@@ -61,7 +62,7 @@ namespace Front_Stateless.Controllers
             {
                 NewOrder = new OrderModel
                 {
-                    ConfirmationId = Guid.NewGuid(),
+                    ConfirmationId = random.Next(),
                     SubmittedOn = DateTime.UtcNow
                 },
                 Errors = new List<string>()
