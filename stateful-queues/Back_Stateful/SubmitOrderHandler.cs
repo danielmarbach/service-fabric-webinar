@@ -33,6 +33,14 @@ namespace Back_Stateful
                 OrderId = order.OrderId
             }).ConfigureAwait(false);
 
+            await context.Send(new UpdateOrderColdStorage
+            {
+                OrderId = order.OrderId,
+                ConfirmationId = order.ConfirmationId,
+                SubmittedOn = order.SubmittedOn,
+                ProcessedOn = order.ProcessedOn
+            }).ConfigureAwait(false);
+
             ServiceEventSource.Current.Write(nameof(SubmitOrder), message);
         }
     }
