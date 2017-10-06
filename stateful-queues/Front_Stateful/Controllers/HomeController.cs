@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Fabric;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Front_Stateful.Models;
 using Messages_Stateful;
+using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 using NServiceBus;
 
 namespace Front_Stateful.Controllers
@@ -12,14 +17,41 @@ namespace Front_Stateful.Controllers
     {
         static Random random = new Random();
 
-        public HomeController(IMessageSession session)
+        public HomeController(IMessageSession session, FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
+            this.httpClient = httpClient;
+            applicationLifetime = appLifetime;
             messageSession = session;
+
+            var uriBuilder = new ServiceUriBuilder("Back_Stateful");
+            backServiceUri = uriBuilder.Build();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            Uri getUrl = new HttpServiceUriBuilder()
+                .SetServiceName(backServiceUri)
+                .SetEndpointName("KestrelListener")
+                .SetServicePathAndQuery("/api/orders")
+                .Build();
+
+            var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var orders = JsonConvert.DeserializeObject<List<OrderModel>>(json);
+
+            var model = new IndexViewModel
+            {
+                Orders = orders
+            };
+
+            return View(model);
         }
 
 
@@ -45,5 +77,9 @@ namespace Front_Stateful.Controllers
         }
 
         IMessageSession messageSession;
+
+        IApplicationLifetime applicationLifetime;
+        Uri backServiceUri;
+        HttpClient httpClient;
     }
 }
