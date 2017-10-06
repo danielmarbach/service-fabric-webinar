@@ -4,9 +4,9 @@
     <TargetFramework>net461</TargetFramework>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
-    <OutputType>Exe</OutputType>        
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <OutputType>Exe</OutputType>
     <LangVersion>7.1</LangVersion>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>    
   </PropertyGroup>
 
   <ItemGroup>

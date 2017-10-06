@@ -19,9 +19,6 @@
     <PackageReference Include="Microsoft.ServiceFabric.Data" Version="2.8.211" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" Version="2.8.211" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.0" />
-    <PackageReference Include="NServiceBus" Version="6.4.0" />
-    <PackageReference Include="NServiceBus.Persistence.ServiceFabric" Version="1.0.0" />
-    <PackageReference Include="NServiceBus.RabbitMQ" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +27,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Messages_Stateful\Messages_Stateful.csproj" />
+    <PackageReference Include="NServiceBus" Version="6.4.0" />
+    <PackageReference Include="NServiceBus.RabbitMQ" Version="4.4.0" />
+    <PackageReference Include="NServiceBus.Persistence.ServiceFabric" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
