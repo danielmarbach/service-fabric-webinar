@@ -10,8 +10,6 @@ namespace Front_Stateful.Controllers
 {
     public class HomeController : Controller
     {
-        private IMessageSession messageSession;
-
         static Random random = new Random();
 
         public HomeController(IMessageSession session)
@@ -45,5 +43,7 @@ namespace Front_Stateful.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        IMessageSession messageSession;
     }
 }

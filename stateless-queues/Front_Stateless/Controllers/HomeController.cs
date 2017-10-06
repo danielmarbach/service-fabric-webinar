@@ -15,11 +15,6 @@ namespace Front_Stateless.Controllers
 {
     public class HomeController : Controller
     {
-        private IMessageSession messageSession;
-
-        private IApplicationLifetime applicationLifetime;
-        private Uri backServiceUri;
-        private HttpClient httpClient;
 
         public HomeController(IMessageSession session, FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
@@ -92,5 +87,11 @@ namespace Front_Stateless.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        IMessageSession messageSession;
+
+        IApplicationLifetime applicationLifetime;
+        Uri backServiceUri;
+        HttpClient httpClient;
     }
 }

@@ -14,10 +14,6 @@ namespace Front.Controllers
 {
     public class HomeController : Controller
     {
-        private IApplicationLifetime applicationLifetime;
-        private Uri backServiceUri;
-        private HttpClient httpClient;
-
         public HomeController(FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
             this.httpClient = httpClient;
@@ -82,5 +78,9 @@ namespace Front.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        IApplicationLifetime applicationLifetime;
+        Uri backServiceUri;
+        HttpClient httpClient;
     }
 }
