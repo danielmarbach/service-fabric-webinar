@@ -7,8 +7,6 @@ namespace Back_Stateless
 {
     public class SubmitOrderHandler : IHandleMessages<SubmitOrder>
     {
-        private OrderContext orderContext;
-
         public SubmitOrderHandler(OrderContext orderContext)
         {
             this.orderContext = orderContext;
@@ -25,7 +23,15 @@ namespace Back_Stateless
 
             orderContext.Orders.Add(order);
 
-            await orderContext.SaveChangesAsync();
+            await orderContext.SaveChangesAsync().ConfigureAwait(false);
+
+            await context.Publish(new OrderCreated
+            {
+                ConfirmationId = order.ConfirmationId,
+                OrderId = order.OrderId
+            }).ConfigureAwait(false);
         }
+
+        OrderContext orderContext;
     }
 }
