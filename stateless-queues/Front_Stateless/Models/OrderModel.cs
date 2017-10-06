@@ -8,6 +8,5 @@ namespace Front_Stateless.Models
         public int ConfirmationId { get; set; }
         public DateTime SubmittedOn { get; set; }
         public DateTime ProcessedOn { get; set; }
-        public DateTime CreatedOn { get; set; }
     }
 }
