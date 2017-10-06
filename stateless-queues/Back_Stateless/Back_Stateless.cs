@@ -13,7 +13,7 @@ namespace Back_Stateless
 {
     internal sealed class Back_Stateless : StatelessService
     {
-        private EndpointCommunicationListener listener;
+        private NServiceBusListener listener;
 
         public Back_Stateless(StatelessServiceContext context)
             : base(context)
@@ -21,7 +21,7 @@ namespace Back_Stateless
 
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
-            listener = new EndpointCommunicationListener(Context);
+            listener = new NServiceBusListener(Context);
             return new List<ServiceInstanceListener>
             {
                 new ServiceInstanceListener(serviceContext =>

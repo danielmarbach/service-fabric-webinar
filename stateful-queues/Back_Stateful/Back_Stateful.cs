@@ -9,7 +9,7 @@ namespace Back_Stateful
 {
     internal sealed class Back_Stateful : StatefulService
     {
-        private EndpointCommunicationListener listener;
+        private NServiceBusListener listener;
 
         public Back_Stateful(StatefulServiceContext context)
             : base(context)
@@ -17,7 +17,7 @@ namespace Back_Stateful
 
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            listener = new EndpointCommunicationListener(Context, StateManager);
+            listener = new NServiceBusListener(Context, StateManager);
             return new List<ServiceReplicaListener>
             {
                 new ServiceReplicaListener(context => listener)
