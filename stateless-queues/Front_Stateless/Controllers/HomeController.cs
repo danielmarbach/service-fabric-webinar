@@ -6,11 +6,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Front_Stateless.Models;
-using Front_Stateless;
 using Messages_Stateless;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.ServiceFabric.Services.Communication.Client;
 using Newtonsoft.Json;
 using NServiceBus;
 
