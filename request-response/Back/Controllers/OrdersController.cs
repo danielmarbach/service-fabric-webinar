@@ -11,6 +11,7 @@ namespace Back.Controllers
     [Route("api/[controller]")]
     public class OrdersController : Controller
     {
+        [HttpGet]
         public IEnumerable<Order> Orders()
         {
             using (var context = new SalesDbContext())

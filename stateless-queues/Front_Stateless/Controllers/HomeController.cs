@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Front;
 using Microsoft.AspNetCore.Mvc;
 using Front_Stateless.Models;
-using Front_Statelesss;
+using Front_Stateless;
 using Messages_Stateless;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
+using Newtonsoft.Json;
 using NServiceBus;
 
 namespace Front_Stateless.Controllers
@@ -20,36 +22,38 @@ namespace Front_Stateless.Controllers
 
         static Random random = new Random();
 
-        private const int MaxQueryRetryCount = 20;
+        private IApplicationLifetime applicationLifetime;
+        private Uri backServiceUri;
+        private HttpClient httpClient;
 
-        private static readonly Uri serviceUri;
-        private static readonly TimeSpan backoffQueryDelay;
-
-        private static readonly FabricClient fabricClient;
-
-        private static readonly OrderBackendClientFactory communicationFactory;
-
-        static HomeController()
+        public HomeController(IMessageSession session, FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
-            serviceUri = new Uri(FabricRuntime.GetActivationContext().ApplicationName + "/Back");
-
-            backoffQueryDelay = TimeSpan.FromSeconds(3);
-
-            fabricClient = new FabricClient();
-
-            communicationFactory = new OrderBackendClientFactory(new ServicePartitionResolver(() => fabricClient));
-        }
-
-        public HomeController(IMessageSession session)
-        {
+            this.httpClient = httpClient;
+            applicationLifetime = appLifetime;
             messageSession = session;
+
+            var uriBuilder = new ServiceUriBuilder("Back_Stateless");
+            backServiceUri = uriBuilder.Build();
         }
 
         public async Task<IActionResult> Index()
         {
-            var partitionClient = new ServicePartitionClient<OrderBackendClient>(communicationFactory, serviceUri);
+            Uri getUrl = new HttpServiceUriBuilder()
+                .SetServiceName(backServiceUri)
+                .SetEndpointName("KestrelListener")
+                .SetServicePathAndQuery("/api/orders")
+                .Build();
 
-            var orders = await partitionClient.InvokeWithRetryAsync(client => client.List());
+            var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var orders = JsonConvert.DeserializeObject<List<OrderModel>>(json);
 
             var model = new IndexViewModel
             {

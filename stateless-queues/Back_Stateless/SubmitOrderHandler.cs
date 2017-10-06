@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Back_Stateless.Data;
+using Order = Back_Stateless.Model.Order;
 using Messages_Stateless;
 using NServiceBus;
 
@@ -10,7 +11,7 @@ namespace Back_Stateless
     {
         public async Task Handle(SubmitOrder message, IMessageHandlerContext context)
         {
-            var order = new Model.Order
+            var order = new Order
             {
                 ConfirmationId = message.ConfirmationId,
                 SubmittedOn = message.SubmittedOn,

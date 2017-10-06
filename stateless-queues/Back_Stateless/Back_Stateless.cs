@@ -25,7 +25,7 @@ namespace Back_Stateless
             return new List<ServiceInstanceListener>
             {
                 new ServiceInstanceListener(serviceContext =>
-                    new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", (url, lstn) =>
+                    new KestrelCommunicationListener(serviceContext, (url, lstn) =>
                     {
                         ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
 
