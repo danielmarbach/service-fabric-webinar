@@ -31,7 +31,7 @@ namespace Back
             return new ServiceInstanceListener[]
             {
                 new ServiceInstanceListener(serviceContext =>
-                    new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
+                    new KestrelCommunicationListener(serviceContext, (url, listener) =>
                     {
                         ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
 
@@ -39,13 +39,13 @@ namespace Back
                                     .UseKestrel()
                                     .ConfigureServices(
                                         services => services
-                                            .AddSingleton<StatelessServiceContext>(serviceContext))
+                                            .AddSingleton(serviceContext))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
-                                    .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
+                                    .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
                                     .UseUrls(url)
                                     .Build();
-                    }))
+                    }), "KestrelListener")
             };
         }
     }

@@ -33,7 +33,7 @@ namespace Back_Stateless
                                     .UseKestrel()
                                     .ConfigureServices(
                                         services => services
-                                            .AddSingleton<StatelessServiceContext>(serviceContext))
+                                            .AddSingleton(serviceContext))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(lstn, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)

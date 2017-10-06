@@ -1,41 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Front.Models;
-using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.ServiceFabric.Services.Communication.Client;
+using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 
 namespace Front.Controllers
 {
     public class HomeController : Controller
     {
-        private const int MaxQueryRetryCount = 20;
+        private IApplicationLifetime applicationLifetime;
+        private Uri backServiceUri;
+        private HttpClient httpClient;
 
-        private static readonly Uri serviceUri;
-        private static readonly TimeSpan backoffQueryDelay;
-
-        private static readonly FabricClient fabricClient;
-
-        private static readonly OrderBackendClientFactory communicationFactory;
-
-        static HomeController()
+        public HomeController(FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
-            serviceUri = new Uri(FabricRuntime.GetActivationContext().ApplicationName + "/Back");
+            this.httpClient = httpClient;
+            applicationLifetime = appLifetime;
 
-            backoffQueryDelay = TimeSpan.FromSeconds(3);
-
-            fabricClient = new FabricClient();
-
-            communicationFactory = new OrderBackendClientFactory(new ServicePartitionResolver(() => fabricClient));
+            var uriBuilder = new ServiceUriBuilder("Back");
+            backServiceUri = uriBuilder.Build();
         }
 
         public async Task<IActionResult> Index()
         {
-            var partitionClient = new ServicePartitionClient<OrderBackendClient>(communicationFactory, serviceUri);
+            Uri getUrl = new HttpServiceUriBuilder()
+                .SetServiceName(backServiceUri)
+                .SetEndpointName("KestrelListener")
+                .SetServicePathAndQuery("/api/orders")
+                .Build();
 
-            var orders = await partitionClient.InvokeWithRetryAsync(client => client.List());
+            var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            var orders = JsonConvert.DeserializeObject<List<OrderModel>>(json);
 
             var model = new IndexViewModel
             {
@@ -48,16 +57,25 @@ namespace Front.Controllers
         [HttpPost]
         public async Task<IActionResult> Order()
         {
-            var partitionClient = new ServicePartitionClient<OrderBackendClient>(communicationFactory, serviceUri);
-            var response = await partitionClient.InvokeWithRetryAsync(client => client.Order(new NewOrderRequest{SubmittedOn = DateTime.UtcNow}));
+            Uri putUrl = new HttpServiceUriBuilder()
+                .SetServiceName(backServiceUri)
+                .SetEndpointName("KestrelListener")
+                .SetServicePathAndQuery("/api/orders")
+                .Build();
 
-            var model = new OrderViewModel
+            var newOrder = new NewOrderRequest { SubmittedOn = DateTime.UtcNow };
+
+            using (var content = new StringContent(JsonConvert.SerializeObject(newOrder), Encoding.UTF8, "application/json"))
             {
-                NewOrder = response.NewOrder,
-                Errors = response.Errors
-            };
+                var httpResponse = await httpClient.PutAsync(putUrl, content)
+                    .ConfigureAwait(false);
 
-            return View(model);
+                var json = await httpResponse.Content.ReadAsStringAsync();
+
+                var model = JsonConvert.DeserializeObject<OrderViewModel>(json);
+
+                return View(model);
+            }
         }
 
         public IActionResult Error()

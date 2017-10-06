@@ -20,8 +20,6 @@ namespace Front_Stateless.Controllers
     {
         private IMessageSession messageSession;
 
-        static Random random = new Random();
-
         private IApplicationLifetime applicationLifetime;
         private Uri backServiceUri;
         private HttpClient httpClient;

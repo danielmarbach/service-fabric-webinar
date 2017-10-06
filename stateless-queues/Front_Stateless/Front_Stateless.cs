@@ -30,8 +30,8 @@ namespace Front_Stateless
                                     .ConfigureServices(
                                         services => services
                                             .AddSingleton(serviceContext)
-                                        .AddSingleton(new FabricClient())
-                                        .AddSingleton(new HttpClient(new HttpServiceClientHandler())))
+                                            .AddSingleton(new FabricClient())
+                                            .AddSingleton(new HttpClient(new HttpServiceClientHandler())))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
