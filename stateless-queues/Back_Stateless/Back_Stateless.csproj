@@ -10,18 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
     <PackageReference Include="Microsoft.ServiceFabric" Version="6.0.211" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />    
     <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="2.8.211" />
     <PackageReference Include="Microsoft.ServiceFabric.Data" Version="2.8.211" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" Version="2.8.211" />
-    <PackageReference Include="NServiceBus" Version="6.4.0" />
-    <PackageReference Include="NServiceBus.RabbitMQ" Version="4.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +29,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Messages_Stateless\Messages_Stateless.csproj" />
+    <PackageReference Include="NServiceBus" Version="6.4.0" />
+    <PackageReference Include="NServiceBus.RabbitMQ" Version="4.4.0" />
   </ItemGroup>
 
 </Project>
