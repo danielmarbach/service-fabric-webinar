@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\request-response\Front\Communication.cs" Link="Communication.cs" />
+    <Compile Include="..\..\common\Communication.cs" Link="Communication.cs" />
   </ItemGroup>
 
   <ItemGroup>
