@@ -4,6 +4,7 @@
     <TargetFramework>net461</TargetFramework>
     <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
     <PackageReference Include="Microsoft.ServiceFabric" Version="6.0.211" />
     <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="2.8.211" />
     <PackageReference Include="Microsoft.ServiceFabric.Data" Version="2.8.211" />

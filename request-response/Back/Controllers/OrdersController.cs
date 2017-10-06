@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Back.Data;
 using Back.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Back.Controllers
 {
     [Route("api/[controller]")]
     public class OrdersController : Controller
     {
-        [HttpGet]
-        public IEnumerable<Order> Orders()
+        private OrderContext orderContext;
+
+        public OrdersController(OrderContext context)
         {
-            using (var context = new SalesDbContext())
-            {
-                return context.Orders.OrderBy(o => o.SubmittedOn);
-            }
+            orderContext = context;
+        }
+
+        [HttpGet]
+        public Task<List<Order>> Orders()
+        {
+            return orderContext.Orders.OrderBy(o => o.SubmittedOn).ToListAsync();
         }
 
         // PUT api/orders/
@@ -34,20 +38,17 @@ namespace Back.Controllers
 
             try
             {
-                using (var context = new SalesDbContext())
-                {
-                    context.Orders.Add(order);
+                orderContext.Orders.Add(order);
 
-                    await context.SaveChangesAsync();
+                await orderContext.SaveChangesAsync();
 
-                    response.NewOrder = order;
+                response.NewOrder = order;
 
-                    return Accepted(response);
-                }
+                return Accepted(response);
             }
             catch (Exception ex)
             {
-                response.Errors = new List<string>{ex.Message};
+                response.Errors = new List<string> {ex.Message};
                 return BadRequest(response);
             }
         }

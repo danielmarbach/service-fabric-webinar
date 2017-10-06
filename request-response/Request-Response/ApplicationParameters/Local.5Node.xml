@@ -3,5 +3,6 @@
   <Parameters>
     <Parameter Name="Back_InstanceCount" Value="1" />
     <Parameter Name="Front_InstanceCount" Value="1" />
+    <Parameter Name="SqlServer_ConnectionString" Value="Data Source=(localdb)\.\service-fabric-webinar;Initial Catalog=requestresponse;Integrated Security=True;" />
   </Parameters>
 </Application>

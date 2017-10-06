@@ -1,7 +1,7 @@
-﻿namespace Back.Model
-{
-    using System;
+﻿using System;
 
+namespace Back
+{
     public class Order
     {
         static Random random = new Random();
@@ -11,7 +11,6 @@
             OrderId = random.Next();
         }
 
-        public int Id => OrderId;
         public int OrderId { get; set; }
         public DateTime SubmittedOn { get; set; }
         public DateTime CreatedOn { get; set; }
