@@ -9,6 +9,6 @@
     <Parameter Name="Back_Stateful_MinReplicaSetSize" Value="1" />
     <Parameter Name="Back_Stateful_TargetReplicaSetSize" Value="1" />
     <Parameter Name="NServiceBus_ConnectionString" Value="host=localhost" />
-    <Parameter Name="SqlServer_ConnectionString" Value="Data Source=(localdb)\.\service-fabric-webinar;Initial Catalog=statelessqueues;Integrated Security=True;" />
+    <Parameter Name="SqlServer_ConnectionString" Value="Data Source=(localdb)\.\service-fabric-webinar;Initial Catalog=statefulqueues;Integrated Security=True;" />
   </Parameters>
 </Application>
