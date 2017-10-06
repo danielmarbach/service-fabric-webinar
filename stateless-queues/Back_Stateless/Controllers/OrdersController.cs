@@ -1,21 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Back_Stateless.Data;
-using Back_Stateless.Model;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Back_Stateless.Controllers
 {
     [Route("api/[controller]")]
     public class OrdersController : Controller
     {
-        [HttpGet]
-        public IEnumerable<Order> Orders()
+        private OrderContext orderContext;
+
+        public OrdersController(OrderContext context)
         {
-            using (var context = new SalesDbContext())
-            {
-                return context.Orders.OrderBy(o => o.SubmittedOn);
-            }
+            orderContext = context;
+        }
+
+        [HttpGet]
+        public Task<List<Order>> Orders()
+        {
+            return orderContext.Orders.OrderBy(o => o.SubmittedOn).ToListAsync();
         }
     }
 }

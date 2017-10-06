@@ -3,4 +3,7 @@
   <Section Name="NServiceBus">
     <Parameter Name="ConnectionString" Value="" />
   </Section>
+  <Section Name="SqlServer">
+    <Parameter Name="ConnectionString" Value="" />
+  </Section>
 </Settings>

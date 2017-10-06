@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Back_Stateless.Data;
-using Order = Back_Stateless.Model.Order;
 using Messages_Stateless;
 using NServiceBus;
 
@@ -9,6 +7,13 @@ namespace Back_Stateless
 {
     public class SubmitOrderHandler : IHandleMessages<SubmitOrder>
     {
+        private OrderContext orderContext;
+
+        public SubmitOrderHandler(OrderContext orderContext)
+        {
+            this.orderContext = orderContext;
+        }
+
         public async Task Handle(SubmitOrder message, IMessageHandlerContext context)
         {
             var order = new Order
@@ -18,12 +23,9 @@ namespace Back_Stateless
                 ProcessedOn = DateTime.UtcNow
             };
 
-            using (var dbContext = new SalesDbContext())
-            {
-                dbContext.Orders.Add(order);
+            orderContext.Orders.Add(order);
 
-                await dbContext.SaveChangesAsync();
-            }
+            await orderContext.SaveChangesAsync();
 
             ServiceEventSource.Current.Write(nameof(SubmitOrder), message);
         }

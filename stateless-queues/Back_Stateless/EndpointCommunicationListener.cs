@@ -2,6 +2,8 @@
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -40,17 +42,26 @@ namespace Back_Stateless
             recoverability.Delayed(d => d.NumberOfRetries(0));
 
             var configurationPackage = context.CodePackageActivationContext.GetConfigurationPackageObject("Config");
-
-            var connectionString = configurationPackage.Settings.Sections["NServiceBus"].Parameters["ConnectionString"];
+            var transportConnectionString = configurationPackage.Settings.Sections["NServiceBus"].Parameters["ConnectionString"];
 
             var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
-            if (string.IsNullOrWhiteSpace(connectionString.Value))
+            if (string.IsNullOrWhiteSpace(transportConnectionString.Value))
             {
-                throw new Exception("Could not read the 'NServiceBus.ConnectionString'. Check the sample prerequisites.");
+                throw new Exception("Could not read the 'NServiceBus_ConnectionString'. Check the sample prerequisites.");
             }
-            transport.ConnectionString(connectionString.Value);
+            transport.ConnectionString(transportConnectionString.Value);
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
+
+            var sqlServerConnectionString = configurationPackage.Settings.Sections["SqlServer"].Parameters["ConnectionString"];
+            if (string.IsNullOrWhiteSpace(sqlServerConnectionString.Value))
+            {
+                throw new Exception("Could not read the 'SqlServer_ConnectionString'. Check the sample prerequisites.");
+            }
+
+            var builder = new DbContextOptionsBuilder<OrderContext>();
+            builder.UseSqlServer(sqlServerConnectionString.Value);
+            endpointConfiguration.RegisterComponents(c => c.ConfigureComponent(() => new OrderContext(builder.Options), DependencyLifecycle.InstancePerUnitOfWork));
 
             return Task.FromResult(default(string));
         }
