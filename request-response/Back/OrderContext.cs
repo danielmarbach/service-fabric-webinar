@@ -14,7 +14,8 @@ public class OrderContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Order>().Property(b => b.OrderId).ValueGeneratedNever();
+        var orderBuilder = modelBuilder.Entity<Order>();
+        orderBuilder.Property(o => o.OrderId).ValueGeneratedNever();
     }
 
     public DbSet<Order> Orders { get; set; }
