@@ -8,14 +8,14 @@ using NServiceBus;
 
 namespace Back_Cold
 {
-    public class EndpointCommunicationListener :
+    public class NServiceBusListener :
         ICommunicationListener
     {
         EndpointConfiguration endpointConfiguration;
         private StatelessServiceContext context;
         private IEndpointInstance endpointInstance;
 
-        public EndpointCommunicationListener(StatelessServiceContext context)
+        public NServiceBusListener(StatelessServiceContext context)
         {
             this.context = context;
         }
@@ -67,7 +67,7 @@ namespace Back_Cold
             if (endpointConfiguration == null)
             {
                 var message =
-                    $"{nameof(EndpointCommunicationListener)} Run() method should be invoked after communication listener has been opened and not before.";
+                    $"{nameof(NServiceBusListener)} Run() method should be invoked after communication listener has been opened and not before.";
 
                 throw new Exception(message);
             }

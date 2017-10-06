@@ -15,7 +15,7 @@ namespace Back_Cold
 
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
-            listener = new EndpointCommunicationListener(Context);
+            listener = new NServiceBusListener(Context);
             return new List<ServiceInstanceListener>
             {
                 new ServiceInstanceListener(context => listener, "NServiceBusListener")
@@ -27,6 +27,6 @@ namespace Back_Cold
             return listener.Run();
         }
 
-        EndpointCommunicationListener listener;
+        NServiceBusListener listener;
     }
 }
