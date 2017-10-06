@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\request-response\Back\EntityFrameworkExtensions.cs" Link="EntityFrameworkExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Compile Include="..\..\common\EntityFrameworkExtensions.cs" Link="EntityFrameworkExtensions.cs" />
   </ItemGroup>
 
   <ItemGroup>
