@@ -25,7 +25,7 @@ namespace Back_Stateful
         private ServiceEventSource() : base() { }
 
         #region Keywords
-        // Event keywords can be used to categorize events. 
+        // Event keywords can be used to categorize events.
         // Each keyword is a bit flag. A single event can be associated with multiple keywords (via EventAttribute.Keywords property).
         // Keywords must be defined as a public class named 'Keywords' inside EventSource that uses them.
         public static class Keywords
