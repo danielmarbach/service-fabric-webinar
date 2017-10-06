@@ -26,8 +26,6 @@ namespace Back_Stateless
             orderContext.Orders.Add(order);
 
             await orderContext.SaveChangesAsync();
-
-            ServiceEventSource.Current.Write(nameof(SubmitOrder), message);
         }
     }
 }
