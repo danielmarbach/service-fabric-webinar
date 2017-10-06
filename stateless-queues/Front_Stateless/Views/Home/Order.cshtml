@@ -1,0 +1,19 @@
+﻿@model OrderViewModel
+@{
+    ViewData["Title"] = "Order Result";
+}
+
+<h2>Order Submitted</h2>
+<div class="row">
+    <div class="col-md-8">
+    @foreach (var error in Model.Errors)
+    {
+        <div class="alert alert-danger">@error</div>
+    }
+    @if (Model.NewOrder != null)
+    {
+        <div class="alert alert-success">Your order has been submitted! You will get a confirmation shortly. If you do not receive a confirmation, or have any other questions, please contact us with confirmation id @Html.Raw(Model.NewOrder.ConfirmationId).</div>
+    }
+    @Html.ActionLink("Back", "Index")
+    </div>
+</div>
