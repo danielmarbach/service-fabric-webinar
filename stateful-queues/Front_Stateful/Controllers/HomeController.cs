@@ -58,17 +58,30 @@ namespace Front_Stateful.Controllers
         [HttpPost]
         public async Task<IActionResult> Order()
         {
-            var orderId = random.Next();
+            var model = new OrderViewModel
+            {
+                NewOrder = new OrderModel
+                {
+                    ConfirmationId = random.Next(),
+                    SubmittedOn = DateTime.UtcNow
+                },
+                Errors = new List<string>()
+            };
+
             try
             {
-                await messageSession.Send(new SubmitOrder(orderId));
-                return View("Index", new SuccessModel { OrderId = orderId });
+                await messageSession.Send(new SubmitOrder
+                {
+                    ConfirmationId = model.NewOrder.ConfirmationId,
+                    SubmittedOn = model.NewOrder.SubmittedOn
+                });
             }
             catch (Exception e)
             {
-                ModelState.AddModelError("error", e.Message);
-                return View("Index");
+                model.Errors.Add(e.Message);
             }
+
+            return View(model);
         }
 
         public IActionResult Error()
