@@ -33,26 +33,18 @@ namespace Back_Stateless
             recoverability.Immediate(d => d.NumberOfRetries(5));
             recoverability.Delayed(d => d.NumberOfRetries(0));
 
-            var configurationPackage = context.CodePackageActivationContext.GetConfigurationPackageObject("Config");
-            var transportConnectionString = configurationPackage.Settings.Sections["NServiceBus"].Parameters["ConnectionString"];
+            var transportConnectionString = context.GetTransportConnectionString();
 
             var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
-            if (string.IsNullOrWhiteSpace(transportConnectionString.Value))
-            {
-                throw new Exception("Could not read the 'NServiceBus_ConnectionString'. Check the sample prerequisites.");
-            }
-            transport.ConnectionString(transportConnectionString.Value);
+            transport.ConnectionString(transportConnectionString);
+
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
 
-            var sqlServerConnectionString = configurationPackage.Settings.Sections["SqlServer"].Parameters["ConnectionString"];
-            if (string.IsNullOrWhiteSpace(sqlServerConnectionString.Value))
-            {
-                throw new Exception("Could not read the 'SqlServer_ConnectionString'. Check the sample prerequisites.");
-            }
+            var sqlServerConnectionString = context.GetDbConnectionString();
 
             var builder = new DbContextOptionsBuilder<OrderContext>();
-            builder.UseSqlServer(sqlServerConnectionString.Value);
+            builder.UseSqlServer(sqlServerConnectionString);
             endpointConfiguration.RegisterComponents(c => c.ConfigureComponent(() => new OrderContext(builder.Options), DependencyLifecycle.InstancePerUnitOfWork));
 
             return Task.FromResult(default(string));

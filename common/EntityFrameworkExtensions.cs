@@ -8,9 +8,9 @@ public static class EntityFrameworkExtensions
     {
         var provider = services.BuildServiceProvider();
         var context = provider.GetService<StatelessServiceContext>();
-        var configurationPackage = context.CodePackageActivationContext.GetConfigurationPackageObject("Config");
-        var connectionString = configurationPackage.Settings.Sections["SqlServer"].Parameters["ConnectionString"];
 
-        services.AddDbContextPool<T>(o => o.UseSqlServer(connectionString.Value));
+        var connectionString = context.GetDbConnectionString();
+
+        services.AddDbContextPool<T>(o => o.UseSqlServer(connectionString));
     }
 }

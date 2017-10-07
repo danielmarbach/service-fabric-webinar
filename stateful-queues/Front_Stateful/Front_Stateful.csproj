@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\common\Communication.cs" Link="Communication.cs" />
+    <Compile Include="..\..\common\ConnectionStringHelper.cs" Link="ConnectionStringHelper.cs" />
   </ItemGroup>
 
   <ItemGroup>
