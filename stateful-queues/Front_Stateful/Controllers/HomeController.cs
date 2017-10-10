@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
+using System.Fabric.Query;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ namespace Front_Stateful.Controllers
             this.httpClient = httpClient;
             applicationLifetime = appLifetime;
             messageSession = session;
+            this.fabricClient = fabricClient;
 
             var uriBuilder = new ServiceUriBuilder("Back_Stateful");
             backServiceUri = uriBuilder.Build();
@@ -29,22 +31,32 @@ namespace Front_Stateful.Controllers
 
         public async Task<IActionResult> Index()
         {
-            Uri getUrl = new HttpServiceUriBuilder()
-                .SetServiceName(backServiceUri)
-                .SetEndpointName("KestrelListener")
-                .SetServicePathAndQuery("/api/orders")
-                .Build();
+            var orders = new List<OrderModel>();
 
-            var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
+            var partitions = await fabricClient.QueryManager.GetPartitionListAsync(backServiceUri);
 
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            foreach (var partition in partitions)
             {
-                return StatusCode((int)response.StatusCode);
+                var getUrl = new HttpServiceUriBuilder()
+                    .SetServiceName(backServiceUri)
+                    .SetPartitionKey(((Int64RangePartitionInformation)partition.PartitionInformation).LowKey)
+                    .SetEndpointName("KestrelListener")
+                    .SetServicePathAndQuery("/api/orders")
+                    .Build();
+
+                var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    return StatusCode((int)response.StatusCode);
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                var partitionOrders = JsonConvert.DeserializeObject<List<OrderModel>>(json);
+
+                orders.AddRange(partitionOrders);
             }
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var orders = JsonConvert.DeserializeObject<List<OrderModel>>(json);
 
             var model = new IndexViewModel
             {
@@ -90,6 +102,7 @@ namespace Front_Stateful.Controllers
         }
 
         IMessageSession messageSession;
+        FabricClient fabricClient;
 
         IApplicationLifetime applicationLifetime;
         Uri backServiceUri;
