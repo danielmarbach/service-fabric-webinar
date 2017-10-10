@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -10,9 +11,10 @@ namespace Back_Stateful.Controllers
     [Route("api/[controller]")]
     public class OrdersController : Controller
     {
-        public OrdersController(IReliableStateManager stateManager)
+        public OrdersController(IReliableStateManager stateManager, IApplicationLifetime applicationLifetime)
         {
             this.stateManager = stateManager;
+            this.applicationLifetime = applicationLifetime;
         }
 
         [HttpGet]
@@ -34,7 +36,7 @@ namespace Back_Stateful.Controllers
                 var enumerable = await dictionary.CreateEnumerableAsync(transaction);
                 var enumerator = enumerable.GetAsyncEnumerator();
 
-                while (await enumerator.MoveNextAsync(CancellationToken.None))
+                while (await enumerator.MoveNextAsync(applicationLifetime.ApplicationStopping))
                 {
                     orders.Add(enumerator.Current.Value);
                 }
@@ -44,5 +46,6 @@ namespace Back_Stateful.Controllers
         }
 
         readonly IReliableStateManager stateManager;
+        readonly IApplicationLifetime applicationLifetime;
     }
 }
