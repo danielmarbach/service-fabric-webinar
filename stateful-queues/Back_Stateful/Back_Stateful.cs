@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Fabric;
 using System.IO;
 using System.Threading;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Data;
+using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
@@ -46,9 +48,12 @@ namespace Back_Stateful
             };
         }
 
-        protected override Task RunAsync(CancellationToken cancellationToken)
+        protected override async Task RunAsync(CancellationToken cancellationToken)
         {
-            return listener.Run();
+            await StateManager.GetOrAddAsync<IReliableDictionary<int, Order>>("orders")
+                    .ConfigureAwait(false);
+
+            await listener.Run();
         }
     }
 }
