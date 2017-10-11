@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Back_Cold
 {
@@ -11,10 +9,5 @@ namespace Back_Cold
         }
 
         public DbSet<Order> Orders { get; set; }
-
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
-using System.Fabric.Query;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;

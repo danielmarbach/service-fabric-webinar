@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Messages_Stateful;
 using Microsoft.ServiceFabric.Data.Collections;
 using NServiceBus;
@@ -14,24 +13,17 @@ namespace Back_Stateful
             var session = context.SynchronizedStorageSession.ServiceFabricSession();
             var stateManager = session.StateManager;
             var transaction = session.Transaction;
-            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<int, Order>>(transaction, "orders")
-                .ConfigureAwait(false);
 
-            var order = new Order
-            {
-                ConfirmationId = message.ConfirmationId,
-                SubmittedOn = message.SubmittedOn,
-                ProcessedOn = DateTime.UtcNow
-            };
+            var order = message.ToOrder();
 
-            await dictionary.AddOrUpdateAsync(transaction, order.OrderId, _ => order, (_, __) => order)
-                .ConfigureAwait(false);
+            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<int, Order>>(transaction, Order.OrdersDictionaryName);
+            await dictionary.AddOrUpdateAsync(transaction, order.OrderId, _ => order, (_, __) => order);
 
             await context.Publish(new OrderCreated
             {
                 ConfirmationId = message.ConfirmationId,
                 OrderId = order.OrderId
-            }).ConfigureAwait(false);
+            });
 
             await context.Send(new UpdateOrderColdStorage
             {
@@ -40,8 +32,6 @@ namespace Back_Stateful
                 SubmittedOn = order.SubmittedOn,
                 ProcessedOn = order.ProcessedOn
             }).ConfigureAwait(false);
-
-            ServiceEventSource.Current.Write(nameof(SubmitOrder), message);
         }
     }
 }
