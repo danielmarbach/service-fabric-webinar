@@ -32,6 +32,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Back_Cold\Back_Cold.csproj" />
     <ProjectReference Include="..\Back_Stateful\Back_Stateful.csproj" />
     <ProjectReference Include="..\Front_Stateful\Front_Stateful.csproj" />
   </ItemGroup>
