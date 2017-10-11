@@ -26,5 +26,8 @@ namespace Back_Stateful
 
         [DataMember(IsRequired = true, Name = "ProcessedOn")]
         public DateTime ProcessedOn { get; set; }
+
+        [DataMember(EmitDefaultValue = true, Name = "Accepted")]
+        public bool Accepted { get; set; }
     }
 }

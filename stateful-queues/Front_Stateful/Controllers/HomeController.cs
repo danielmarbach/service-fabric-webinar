@@ -99,6 +99,17 @@ namespace Front_Stateful.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int confirmationId)
+        {
+            await messageSession.Send(new CancelOrder
+            {
+                ConfirmationId = confirmationId,
+            });
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

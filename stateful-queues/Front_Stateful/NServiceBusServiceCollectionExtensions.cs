@@ -28,7 +28,9 @@ namespace Front_Stateful
             delayedDelivery.DisableTimeoutManager();
 
             var routing = transport.Routing();
-            routing.RouteToEndpoint(typeof(SubmitOrder), "back-stateful");
+            var backStateful = "back-stateful";
+            routing.RouteToEndpoint(typeof(SubmitOrder), backStateful);
+            routing.RouteToEndpoint(typeof(CancelOrder), backStateful);
 
             var endpointInstance = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
             services.AddSingleton<IMessageSession>(endpointInstance);

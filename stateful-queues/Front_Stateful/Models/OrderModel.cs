@@ -8,5 +8,6 @@ namespace Front_Stateful.Models
         public int ConfirmationId { get; set; }
         public DateTime SubmittedOn { get; set; }
         public DateTime ProcessedOn { get; set; }
+        public bool Accepted { get; set; }
     }
 }
