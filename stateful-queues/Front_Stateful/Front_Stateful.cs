@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Fabric;
 using System.IO;
+using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
@@ -17,7 +18,7 @@ namespace Front_Stateful
 
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
         {
-            return new ServiceInstanceListener[]
+            return new[]
             {
                 new ServiceInstanceListener(serviceContext =>
                     new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
@@ -28,7 +29,9 @@ namespace Front_Stateful
                                     .UseKestrel()
                                     .ConfigureServices(
                                         services => services
-                                            .AddSingleton(serviceContext))
+                                            .AddSingleton(serviceContext)
+                                            .AddSingleton(new FabricClient())
+                                            .AddSingleton(new HttpClient(new HttpServiceClientHandler())))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
