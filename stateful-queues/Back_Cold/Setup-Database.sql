@@ -31,6 +31,7 @@ CREATE TABLE [dbo].[Orders](
 	[OrderId] [int] unique NOT NULL,
 	[SubmittedOn] [datetime] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
+	[StoredOn] [datetime] NOT NULL,
 	[ConfirmationId] [int] NOT NULL,
 ) ON [PRIMARY]
 GO
