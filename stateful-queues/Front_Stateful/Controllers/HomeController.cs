@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
 using System.Fabric.Query;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -31,39 +32,42 @@ namespace Front_Stateful.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var orders = new List<OrderModel>();
-
             var partitions = await fabricClient.QueryManager.GetPartitionListAsync(backServiceUri);
+
+            var orderTasks = new List<Task<List<OrderModel>>>();
 
             foreach (var partition in partitions)
             {
-                var getUrl = new HttpServiceUriBuilder()
-                    .SetServiceName(backServiceUri)
-                    .SetPartitionKey(((Int64RangePartitionInformation)partition.PartitionInformation).LowKey)
-                    .SetEndpointName("KestrelListener")
-                    .SetServicePathAndQuery("/api/orders")
-                    .Build();
-
-                var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
-
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                async Task<List<OrderModel>> queryPartition()
                 {
-                    return StatusCode((int)response.StatusCode);
+                    var getUrl = new HttpServiceUriBuilder()
+                        .SetServiceName(backServiceUri)
+                        .SetPartitionKey(((Int64RangePartitionInformation)partition.PartitionInformation).LowKey)
+                        .SetEndpointName("KestrelListener")
+                        .SetServicePathAndQuery("/api/orders")
+                        .Build();
+
+                    var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
+
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        return new List<OrderModel>();
+                    }
+
+                    var json = await response.Content.ReadAsStringAsync();
+
+                    return JsonConvert.DeserializeObject<List<OrderModel>>(json);
                 }
 
-                var json = await response.Content.ReadAsStringAsync();
-
-                var partitionOrders = JsonConvert.DeserializeObject<List<OrderModel>>(json);
-
-                orders.AddRange(partitionOrders);
+                orderTasks.Add(queryPartition());
             }
 
-            var model = new IndexViewModel
-            {
-                Orders = orders
-            };
+            var allPartitionOrders = await Task.WhenAll(orderTasks);
 
-            return View(model);
+            return View(new IndexViewModel
+            {
+                Orders = allPartitionOrders.SelectMany(o => o)
+            });
         }
 
 
