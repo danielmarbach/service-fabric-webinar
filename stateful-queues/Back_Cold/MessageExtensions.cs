@@ -10,7 +10,6 @@ namespace Back_Cold
             var order = new Order
             {
                 OrderId = message.OrderId,
-                ConfirmationId = message.ConfirmationId,
                 SubmittedOn = message.SubmittedOn,
                 CreatedOn = message.ProcessedOn,
                 StoredOn = DateTime.UtcNow

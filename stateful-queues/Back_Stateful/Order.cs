@@ -8,18 +8,8 @@ namespace Back_Stateful
     {
         public const string OrdersDictionaryName = "orders";
 
-        static Random random = new Random();
-
-        public Order()
-        {
-            OrderId = random.Next();
-        }
-
         [DataMember(IsRequired = true, Name = "OrderId")]
-        public int OrderId { get; set; }
-
-        [DataMember(IsRequired = true, Name = "ConfirmationId")]
-        public int ConfirmationId { get; set; }
+        public Guid OrderId { get; set; }
 
         [DataMember(IsRequired = true, Name = "SubmittedOn")]
         public DateTime SubmittedOn { get; set; }

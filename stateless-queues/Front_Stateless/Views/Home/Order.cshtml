@@ -12,7 +12,7 @@
     }
     @if (Model.NewOrder != null)
     {
-        <div class="alert alert-success">Your order has been submitted! You will get a confirmation shortly. If you do not receive a confirmation, or have any other questions, please contact us with confirmation id @Html.Raw(Model.NewOrder.ConfirmationId).</div>
+        <div class="alert alert-success">Your order has been submitted! You will get a confirmation shortly. If you do not receive a confirmation, or have any other questions, please contact us with order id @Html.Raw(Model.NewOrder.OrderId).</div>
     }
     @Html.ActionLink("Back", "Index")
     </div>

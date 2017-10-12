@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Messages_Stateful;
 using Microsoft.ServiceFabric.Data.Collections;
 using NServiceBus;
@@ -16,19 +17,17 @@ namespace Back_Stateful
 
             var order = message.ToOrder();
 
-            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<int, Order>>(transaction, Order.OrdersDictionaryName);
+            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<Guid, Order>>(transaction, Order.OrdersDictionaryName);
             await dictionary.AddOrUpdateAsync(transaction, order.OrderId, _ => order, (_, __) => order);
 
             await context.Publish(new OrderCreated
             {
-                ConfirmationId = message.ConfirmationId,
                 OrderId = order.OrderId
             });
 
             await context.Send(new UpdateOrderColdStorage
             {
                 OrderId = order.OrderId,
-                ConfirmationId = order.ConfirmationId,
                 SubmittedOn = order.SubmittedOn,
                 ProcessedOn = order.ProcessedOn
             }).ConfigureAwait(false);

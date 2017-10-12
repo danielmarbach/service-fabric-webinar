@@ -5,8 +5,7 @@ namespace Messages_Stateful
 {
     public class UpdateOrderColdStorage : ICommand
     {
-        public int OrderId { get; set; }
-        public int ConfirmationId { get; set; }
+        public Guid OrderId { get; set; }
         public DateTime SubmittedOn { get; set; }
         public DateTime ProcessedOn { get; set; }
     }

@@ -33,7 +33,7 @@
                         <td>@order.ProcessedOn.ToString("yyyy-MM-dd HH:mm:ss")</td>
                         <td>@if (!order.Accepted)
                             {
-                                using (Html.BeginForm("Cancel", "Home", new { order.ConfirmationId }, FormMethod.Post))
+                                using (Html.BeginForm("Cancel", "Home", new { order.OrderId }, FormMethod.Post))
                                 {
                                     <button type="submit" class="btn btn-warning btn-sm">
                                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Cancel

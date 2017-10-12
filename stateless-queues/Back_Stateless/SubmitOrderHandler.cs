@@ -18,7 +18,6 @@ namespace Back_Stateless
 
             await context.Publish(new OrderCreated
             {
-                ConfirmationId = order.ConfirmationId,
                 OrderId = order.OrderId
             });
 

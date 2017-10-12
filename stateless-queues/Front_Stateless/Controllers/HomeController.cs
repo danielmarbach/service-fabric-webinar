@@ -15,8 +15,6 @@ namespace Front_Stateless.Controllers
 {
     public class HomeController : Controller
     {
-        static Random random = new Random();
-
         public HomeController(IMessageSession session, FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
             this.httpClient = httpClient;
@@ -62,7 +60,7 @@ namespace Front_Stateless.Controllers
             {
                 NewOrder = new OrderModel
                 {
-                    ConfirmationId = random.Next(),
+                    OrderId = RT.Comb.Provider.Sql.Create(),
                     SubmittedOn = DateTime.UtcNow
                 },
                 Errors = new List<string>()
@@ -72,7 +70,7 @@ namespace Front_Stateless.Controllers
             {
                 await messageSession.Send(new SubmitOrder
                 {
-                    ConfirmationId = model.NewOrder.ConfirmationId,
+                    OrderId = model.NewOrder.OrderId,
                     SubmittedOn = model.NewOrder.SubmittedOn
                 });
             }

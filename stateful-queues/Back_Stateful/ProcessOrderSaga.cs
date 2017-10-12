@@ -14,7 +14,7 @@ namespace Back_Stateful
     {
         public Task Handle(SubmitOrder message, IMessageHandlerContext context)
         {
-            Data.ConfirmationId = message.ConfirmationId;
+            Data.OrderId = message.OrderId;
 
             return RequestTimeout(context, TimeSpan.FromSeconds(10), new BuyersRemorseIsOver());
         }
@@ -25,7 +25,6 @@ namespace Back_Stateful
 
             var orderAccepted = new OrderAccepted
             {
-                ConfirmationId = Data.ConfirmationId,
                 OrderId = Data.OrderId,
             };
             return context.Publish(orderAccepted);
@@ -33,7 +32,6 @@ namespace Back_Stateful
 
         public Task Handle(OrderCreated message, IMessageHandlerContext context)
         {
-            Data.ConfirmationId = message.ConfirmationId;
             Data.OrderId = message.OrderId;
             Data.OrderCreated = true;
 
@@ -46,7 +44,6 @@ namespace Back_Stateful
 
             var orderCancelled = new OrderCanceled
             {
-                ConfirmationId = message.ConfirmationId,
                 OrderId = Data.OrderId
             };
             return context.Publish(orderCancelled);
@@ -54,21 +51,19 @@ namespace Back_Stateful
 
         protected override void ConfigureHowToFindSaga(SagaPropertyMapper<OrderData> mapper)
         {
-            mapper.ConfigureMapping<SubmitOrder>(message => message.ConfirmationId)
-                .ToSaga(sagaData => sagaData.ConfirmationId);
-            mapper.ConfigureMapping<OrderCreated>(message => message.ConfirmationId)
-                .ToSaga(sagaData => sagaData.ConfirmationId);
-            mapper.ConfigureMapping<CancelOrder>(message => message.ConfirmationId)
-                .ToSaga(sagaData => sagaData.ConfirmationId);
+            mapper.ConfigureMapping<SubmitOrder>(message => message.OrderId)
+                .ToSaga(sagaData => sagaData.OrderId);
+            mapper.ConfigureMapping<OrderCreated>(message => message.OrderId)
+                .ToSaga(sagaData => sagaData.OrderId);
+            mapper.ConfigureMapping<CancelOrder>(message => message.OrderId)
+                .ToSaga(sagaData => sagaData.OrderId);
         }
 
         public class OrderData :
             ContainSagaData
         {
-            public int ConfirmationId { get; set; }
-
             public bool OrderCreated { get; set; }
-            public int OrderId { get; set; }
+            public Guid OrderId { get; set; }
         }
 
         public class BuyersRemorseIsOver

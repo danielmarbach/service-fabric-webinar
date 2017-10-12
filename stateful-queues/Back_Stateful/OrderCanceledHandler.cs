@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Messages_Stateful;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -14,7 +15,7 @@ namespace Back_Stateful
             var stateManager = session.StateManager;
             var transaction = session.Transaction;
 
-            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<int, Order>>(transaction, Order.OrdersDictionaryName);
+            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<Guid, Order>>(transaction, Order.OrdersDictionaryName);
             await dictionary.TryRemoveAsync(transaction, message.OrderId);
         }
     }

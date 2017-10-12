@@ -9,7 +9,7 @@ namespace Back_Stateful
         {
             var order = new Order
             {
-                ConfirmationId = message.ConfirmationId,
+                OrderId = message.OrderId,
                 SubmittedOn = message.SubmittedOn,
                 ProcessedOn = DateTime.UtcNow
             };
