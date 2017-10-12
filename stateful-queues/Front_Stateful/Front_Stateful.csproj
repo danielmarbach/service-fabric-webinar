@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Messages_Stateful\Messages_Stateful.csproj" />
+    <ProjectReference Include="..\StatefulRouting\StatefulRouting.csproj" />
   </ItemGroup>
 
   <ItemGroup>

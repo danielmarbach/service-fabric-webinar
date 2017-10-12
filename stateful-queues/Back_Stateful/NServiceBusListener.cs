@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Fabric;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Messages_Stateful;
@@ -19,7 +20,7 @@ namespace Back_Stateful
             this.context = context;
         }
 
-        public Task<string> OpenAsync(CancellationToken cancellationToken)
+        public async Task<string> OpenAsync(CancellationToken cancellationToken)
         {
             endpointConfiguration = new EndpointConfiguration("back-stateful");
 
@@ -27,6 +28,11 @@ namespace Back_Stateful
             endpointConfiguration.AuditProcessedMessagesTo("audit");
             endpointConfiguration.UseSerialization<JsonSerializer>();
             endpointConfiguration.EnableInstallers();
+
+            var partitionInfo =
+                await ServicePartitionQueryHelper.QueryServicePartitions(context.ServiceName, context.PartitionId);
+
+            endpointConfiguration.RegisterPartitionsForThisEndpoint(partitionInfo.LocalPartitionKey.Value.ToString(), partitionInfo.Partitions.Keys.Select(k => k.ToString()).ToArray());
 
             var persistence = endpointConfiguration.UsePersistence<ServiceFabricPersistence>();
             persistence.StateManager(stateManager);
@@ -45,10 +51,23 @@ namespace Back_Stateful
             var routing = transport.Routing();
             routing.RouteToEndpoint(typeof(UpdateOrderColdStorage), "back-cold");
 
+            string convertOrderIdToPartitionLowKey(Guid orderId)
+            {
+                var key = orderId.GetHashCode();
+
+                var partition = partitionInfo.Partitions.Single(p => p.Key >= key && p.Value <= key);
+
+                return partition.Key.ToString();
+            }
+
+            var recieverSideDistribution = routing.EnableReceiverSideDistribution(partitionInfo.Partitions.Keys.Select(k => k.ToString()).ToArray());
+            recieverSideDistribution.AddPartitionMappingForMessageType<OrderCreated>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
+            recieverSideDistribution.AddPartitionMappingForMessageType<CancelOrder>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
+
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
 
-            return Task.FromResult(default(string));
+            return string.Empty;
         }
 
         public async Task Run()

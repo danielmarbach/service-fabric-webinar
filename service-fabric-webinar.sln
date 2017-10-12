@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Request_Response", "request-response\Request-Response\Request_Response.sfproj", "{59F03AC4-9242-4E60-826F-9FB70C7A9B47}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messages_Stateful", "stateful-queues\Messages_Stateful\Messages_Stateful.csproj", "{4130FFB3-A8B3-42D6-A279-E3F6BBC17E6C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Back_Cold", "stateful-queues\Back_Cold\Back_Cold.csproj", "{C80F82C3-6211-49D9-95EB-587913A8577A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatefulRouting", "stateful-queues\StatefulRouting\StatefulRouting.csproj", "{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +139,14 @@ Global
 		{C80F82C3-6211-49D9-95EB-587913A8577A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C80F82C3-6211-49D9-95EB-587913A8577A}.Release|x64.ActiveCfg = Release|Any CPU
 		{C80F82C3-6211-49D9-95EB-587913A8577A}.Release|x64.Build.0 = Release|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Debug|x64.Build.0 = Debug|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Release|x64.ActiveCfg = Release|Any CPU
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +164,7 @@ Global
 		{9BC9F53C-1B77-4FB6-915D-B3231539CFA3} = {92D8A4CF-A8C9-49BA-9C77-CE5ADE0113BA}
 		{4130FFB3-A8B3-42D6-A279-E3F6BBC17E6C} = {92D8A4CF-A8C9-49BA-9C77-CE5ADE0113BA}
 		{C80F82C3-6211-49D9-95EB-587913A8577A} = {92D8A4CF-A8C9-49BA-9C77-CE5ADE0113BA}
+		{1EAF691B-4D41-4CB4-90EA-FA8769AFB200} = {92D8A4CF-A8C9-49BA-9C77-CE5ADE0113BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4201E608-1CD1-4A3C-90F5-F8C3402F73A3}

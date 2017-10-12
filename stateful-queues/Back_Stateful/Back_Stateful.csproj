@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Messages_Stateful\Messages_Stateful.csproj" />
+    <ProjectReference Include="..\StatefulRouting\StatefulRouting.csproj" />
     <PackageReference Include="NServiceBus" Version="6.4.0" />
     <PackageReference Include="NServiceBus.RabbitMQ" Version="4.4.0" />
     <PackageReference Include="NServiceBus.Persistence.ServiceFabric" Version="1.0.0" />
