@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Fabric;
 using System.IO;
 using System.Threading;
@@ -48,7 +49,7 @@ namespace Back_Stateful
 
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
-            await StateManager.GetOrAddAsync<IReliableDictionary<int, Order>>(Order.OrdersDictionaryName);
+            await StateManager.GetOrAddAsync<IReliableDictionary<Guid, Order>>(Order.OrdersDictionaryName);
 
             await listener.Run();
         }
