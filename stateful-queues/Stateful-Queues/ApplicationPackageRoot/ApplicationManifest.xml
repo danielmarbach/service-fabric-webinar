@@ -3,9 +3,9 @@
   <Parameters>
     <Parameter Name="Front_Stateful_InstanceCount" DefaultValue="-1" />
     <Parameter Name="Cold_Stateful_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="Back_Stateful_MinReplicaSetSize" DefaultValue="3" />
-    <Parameter Name="Back_Stateful_PartitionCount" DefaultValue="1" />
-    <Parameter Name="Back_Stateful_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="Back_Stateful_MinReplicaSetSize" DefaultValue="1" />
+    <Parameter Name="Back_Stateful_PartitionCount" DefaultValue="5" />
+    <Parameter Name="Back_Stateful_TargetReplicaSetSize" DefaultValue="1" />
     <Parameter Name="Back_Stateful_LowKey" DefaultValue="0" />
     <Parameter Name="Back_Stateful_HighKey" DefaultValue="2147483647" />
     <Parameter Name="NServiceBus_ConnectionString" DefaultValue="" />

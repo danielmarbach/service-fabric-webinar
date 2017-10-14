@@ -3,7 +3,7 @@
   <Parameters>
     <Parameter Name="Front_Stateful_InstanceCount" Value="1" />
     <Parameter Name="Cold_Stateful_InstanceCount" Value="1" />
-    <Parameter Name="Back_Stateful_PartitionCount" Value="1" />
+    <Parameter Name="Back_Stateful_PartitionCount" Value="5" />
     <Parameter Name="Back_Stateful_LowKey" Value="0" />
     <Parameter Name="Back_Stateful_HighKey" Value="2147483647" />
     <Parameter Name="Back_Stateful_MinReplicaSetSize" Value="1" />
