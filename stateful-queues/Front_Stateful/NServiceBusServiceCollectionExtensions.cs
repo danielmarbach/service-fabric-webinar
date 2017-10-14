@@ -43,14 +43,14 @@ namespace Front_Stateful
             {
                 var key = orderId.GetHashCode();
 
-                var partition = partitionInfo.Partitions.Single(p => p.Key >= key && p.Value <= key);
+                var partition = partitionInfo.Partitions.Single(p => p.LowKey <= key && p.HighKey >= key);
 
-                return partition.Key.ToString();
+                return partition.LowKey.ToString();
             }
 
             var senderSideDistribution =
                 routing.RegisterPartitionedDestinationEndpoint(backStateful,
-                    partitionInfo.Partitions.Keys.Select(k => k.ToString()).ToArray());
+                    partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
 
             senderSideDistribution.AddPartitionMappingForMessageType<SubmitOrder>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
             senderSideDistribution.AddPartitionMappingForMessageType<CancelOrder>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));

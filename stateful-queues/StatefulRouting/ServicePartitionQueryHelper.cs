@@ -19,7 +19,7 @@ public static class ServicePartitionQueryHelper
             return new PartitionsInformation
             {
                 LocalPartitionKey = partitionInformations.SingleOrDefault(p => p.Id == partitionId)?.LowKey,
-                Partitions = partitionInformations.ToDictionary(p => p.LowKey, p => p.HighKey)
+                Partitions = partitionInformations
             };
         }
     }
@@ -28,5 +28,5 @@ public static class ServicePartitionQueryHelper
 public class PartitionsInformation
 {
     public long? LocalPartitionKey { get; set; }
-    public Dictionary<long, long> Partitions { get; set; }
+    public List<Int64RangePartitionInformation> Partitions { get; set; }
 }

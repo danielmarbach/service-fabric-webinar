@@ -32,7 +32,7 @@ namespace Back_Stateful
             var partitionInfo =
                 await ServicePartitionQueryHelper.QueryServicePartitions(context.ServiceName, context.PartitionId);
 
-            endpointConfiguration.RegisterPartitionsForThisEndpoint(partitionInfo.LocalPartitionKey.Value.ToString(), partitionInfo.Partitions.Keys.Select(k => k.ToString()).ToArray());
+            endpointConfiguration.RegisterPartitionsForThisEndpoint(partitionInfo.LocalPartitionKey.Value.ToString(), partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
 
             var persistence = endpointConfiguration.UsePersistence<ServiceFabricPersistence>();
             persistence.StateManager(stateManager);
@@ -55,12 +55,12 @@ namespace Back_Stateful
             {
                 var key = orderId.GetHashCode();
 
-                var partition = partitionInfo.Partitions.Single(p => p.Key >= key && p.Value <= key);
+                var partition = partitionInfo.Partitions.Single(p => p.LowKey <= key && p.HighKey >= key);
 
-                return partition.Key.ToString();
+                return partition.LowKey.ToString();
             }
 
-            var recieverSideDistribution = routing.EnableReceiverSideDistribution(partitionInfo.Partitions.Keys.Select(k => k.ToString()).ToArray());
+            var recieverSideDistribution = routing.EnableReceiverSideDistribution(partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
             recieverSideDistribution.AddPartitionMappingForMessageType<OrderAccepted>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
             recieverSideDistribution.AddPartitionMappingForMessageType<OrderCanceled>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
             recieverSideDistribution.AddPartitionMappingForMessageType<OrderCreated>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
