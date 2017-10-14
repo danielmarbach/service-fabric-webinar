@@ -61,8 +61,9 @@ namespace Back_Stateful
             }
 
             var recieverSideDistribution = routing.EnableReceiverSideDistribution(partitionInfo.Partitions.Keys.Select(k => k.ToString()).ToArray());
+            recieverSideDistribution.AddPartitionMappingForMessageType<OrderAccepted>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
+            recieverSideDistribution.AddPartitionMappingForMessageType<OrderCanceled>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
             recieverSideDistribution.AddPartitionMappingForMessageType<OrderCreated>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
-            recieverSideDistribution.AddPartitionMappingForMessageType<CancelOrder>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
 
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
