@@ -9,6 +9,8 @@
   <ItemGroup>
     <Compile Include="..\..\common\Communication.cs" Link="Communication.cs" />
     <Compile Include="..\..\common\ConnectionStringHelper.cs" Link="ConnectionStringHelper.cs" />
+    <Compile Include="..\..\common\CombGuid.cs" Link="CombGuid.cs" />
+    <Compile Include="..\..\common\CRC64.cs" Link="CRC64.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +25,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.0.0" />
     <PackageReference Include="NServiceBus" Version="6.4.0" />
     <PackageReference Include="NServiceBus.RabbitMQ" Version="4.4.0" />
-    <PackageReference Include="RT.Comb" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>

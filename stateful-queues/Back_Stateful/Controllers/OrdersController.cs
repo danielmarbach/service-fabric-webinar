@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace Back_Stateful.Controllers
         {
             var orders = new List<Order>();
 
-            var result = await stateManager.TryGetAsync<IReliableDictionary<int, Order>>(Order.OrdersDictionaryName);
+            var result = await stateManager.TryGetAsync<IReliableDictionary<Guid, Order>>(Order.OrdersDictionaryName);
 
             if (!result.HasValue)
             {

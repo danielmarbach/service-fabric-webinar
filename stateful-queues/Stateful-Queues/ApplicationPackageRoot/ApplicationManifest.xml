@@ -6,8 +6,8 @@
     <Parameter Name="Back_Stateful_MinReplicaSetSize" DefaultValue="1" />
     <Parameter Name="Back_Stateful_PartitionCount" DefaultValue="5" />
     <Parameter Name="Back_Stateful_TargetReplicaSetSize" DefaultValue="1" />
-    <Parameter Name="Back_Stateful_LowKey" DefaultValue="0" />
-    <Parameter Name="Back_Stateful_HighKey" DefaultValue="2147483647" />
+    <Parameter Name="Back_Stateful_LowKey" DefaultValue="-9223372036854775808" />
+    <Parameter Name="Back_Stateful_HighKey" DefaultValue="9223372036854775807" />
     <Parameter Name="NServiceBus_ConnectionString" DefaultValue="" />
     <Parameter Name="SqlServer_ConnectionString" DefaultValue="" />
   </Parameters>

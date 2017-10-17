@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Messages_Stateful;
 using Microsoft.ServiceFabric.Data;
+using Microsoft.ServiceFabric.Services;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using NServiceBus;
 using NServiceBus.Persistence.ServiceFabric;
@@ -32,7 +33,7 @@ namespace Back_Stateful
             var partitionInfo =
                 await ServicePartitionQueryHelper.QueryServicePartitions(context.ServiceName, context.PartitionId);
 
-            endpointConfiguration.RegisterPartitionsForThisEndpoint(partitionInfo.LocalPartitionKey.Value.ToString(), partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
+            endpointConfiguration.RegisterPartitionsForThisEndpoint(partitionInfo.LocalPartitionKey?.ToString(), partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
 
             var persistence = endpointConfiguration.UsePersistence<ServiceFabricPersistence>();
             persistence.StateManager(stateManager);
@@ -51,9 +52,9 @@ namespace Back_Stateful
             var routing = transport.Routing();
             routing.RouteToEndpoint(typeof(UpdateOrderColdStorage), "back-cold");
 
-            string convertOrderIdToPartitionLowKey(Guid orderId)
+            string ConvertOrderIdToPartitionLowKey(Guid orderId)
             {
-                var key = orderId.GetHashCode();
+                var key = CRC64.ToCRC64(orderId.ToByteArray());
 
                 var partition = partitionInfo.Partitions.Single(p => p.LowKey <= key && p.HighKey >= key);
 
@@ -61,9 +62,9 @@ namespace Back_Stateful
             }
 
             var recieverSideDistribution = routing.EnableReceiverSideDistribution(partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
-            recieverSideDistribution.AddPartitionMappingForMessageType<OrderAccepted>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
-            recieverSideDistribution.AddPartitionMappingForMessageType<OrderCanceled>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
-            recieverSideDistribution.AddPartitionMappingForMessageType<OrderCreated>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
+            recieverSideDistribution.AddPartitionMappingForMessageType<OrderAccepted>(msg => ConvertOrderIdToPartitionLowKey(msg.OrderId));
+            recieverSideDistribution.AddPartitionMappingForMessageType<OrderCanceled>(msg => ConvertOrderIdToPartitionLowKey(msg.OrderId));
+            recieverSideDistribution.AddPartitionMappingForMessageType<OrderCreated>(msg => ConvertOrderIdToPartitionLowKey(msg.OrderId));
 
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();

@@ -75,7 +75,7 @@ namespace Front_Stateful.Controllers
             {
                 NewOrder = new OrderModel
                 {
-                    OrderId = RT.Comb.Provider.Sql.Create(),
+                    OrderId = CombGuid.Generate(),
                     SubmittedOn = DateTime.UtcNow
                 },
                 Errors = new List<string>()

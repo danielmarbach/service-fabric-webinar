@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\common\ConnectionStringHelper.cs" Link="ConnectionStringHelper.cs" />
+    <Compile Include="..\..\common\CRC64.cs" Link="CRC64.cs" />
   </ItemGroup>
 
   <ItemGroup>

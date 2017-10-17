@@ -16,6 +16,7 @@
   <ItemGroup>
   	<Compile Include="..\..\common\EntityFrameworkExtensions.cs" Link="EntityFrameworkExtensions.cs" />
     <Compile Include="..\..\common\ConnectionStringHelper.cs" Link="ConnectionStringHelper.cs" />
+    <Compile Include="..\..\common\CombGuid.cs" Link="CombGuid.cs" />
   </ItemGroup>
 
   <ItemGroup>

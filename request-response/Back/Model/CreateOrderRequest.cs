@@ -5,5 +5,7 @@
     public class CreateOrderRequest
     {
         public DateTime SubmittedOn { get; set; }
+
+        public Guid OrderId { get; set; }
     }
 }

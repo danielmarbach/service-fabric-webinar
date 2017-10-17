@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\common\Communication.cs" Link="Communication.cs" />
+    <Compile Include="..\..\common\Communication.cs" Link="Communication.cs" />    
+    <Compile Include="..\..\common\CombGuid.cs" Link="CombGuid.cs" />
   </ItemGroup>
 
   <ItemGroup>

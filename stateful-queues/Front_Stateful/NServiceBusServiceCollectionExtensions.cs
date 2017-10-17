@@ -4,6 +4,7 @@ using System.Fabric;
 using System.Linq;
 using Messages_Stateful;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.ServiceFabric.Services;
 using NServiceBus;
 
 namespace Front_Stateful
@@ -39,9 +40,9 @@ namespace Front_Stateful
 
             var partitionInfo = ServicePartitionQueryHelper.QueryServicePartitions(backServiceUri, Guid.Empty).GetAwaiter().GetResult();
 
-            string convertOrderIdToPartitionLowKey(Guid orderId)
+            string ConvertOrderIdToPartitionLowKey(Guid orderId)
             {
-                var key = orderId.GetHashCode();
+                var key = CRC64.ToCRC64(orderId.ToByteArray());
 
                 var partition = partitionInfo.Partitions.Single(p => p.LowKey <= key && p.HighKey >= key);
 
@@ -52,8 +53,8 @@ namespace Front_Stateful
                 routing.RegisterPartitionedDestinationEndpoint(backStateful,
                     partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
 
-            senderSideDistribution.AddPartitionMappingForMessageType<SubmitOrder>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
-            senderSideDistribution.AddPartitionMappingForMessageType<CancelOrder>(msg => convertOrderIdToPartitionLowKey(msg.OrderId));
+            senderSideDistribution.AddPartitionMappingForMessageType<SubmitOrder>(msg => ConvertOrderIdToPartitionLowKey(msg.OrderId));
+            senderSideDistribution.AddPartitionMappingForMessageType<CancelOrder>(msg => ConvertOrderIdToPartitionLowKey(msg.OrderId));
 
             var endpointInstance = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
             services.AddSingleton<IMessageSession>(endpointInstance);

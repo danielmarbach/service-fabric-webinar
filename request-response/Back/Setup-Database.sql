@@ -28,7 +28,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[Orders](
-	[OrderId] [int] unique NOT NULL,
+	[OrderId] [uniqueidentifier] unique NOT NULL,
 	[SubmittedOn] [datetime] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL
 ) ON [PRIMARY]

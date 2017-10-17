@@ -59,7 +59,7 @@ namespace Front.Controllers
                 .SetServicePathAndQuery("/api/orders")
                 .Build();
 
-            var newOrder = new NewOrderRequest { SubmittedOn = DateTime.UtcNow };
+            var newOrder = new NewOrderRequest { SubmittedOn = DateTime.UtcNow, OrderId = CombGuid.Generate() };
 
             using (var content = new StringContent(JsonConvert.SerializeObject(newOrder), Encoding.UTF8, "application/json"))
             {

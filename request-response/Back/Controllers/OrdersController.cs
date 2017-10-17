@@ -31,7 +31,8 @@ namespace Back.Controllers
             var order = new Order
             {
                 SubmittedOn = newOrder.SubmittedOn,
-                CreatedOn = DateTime.UtcNow
+                CreatedOn = DateTime.UtcNow,
+                OrderId = newOrder.OrderId
             };
 
             var response = new CreateOrderResponse();
