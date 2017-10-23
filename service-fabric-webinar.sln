@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front", "request-response\F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Back", "request-response\Back\Back.csproj", "{C0F7E00B-B70E-4654-A38A-5686BD75BB86}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "request-response", "request-response", "{C67FFCBE-103A-468C-816C-E263D42A0498}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. request-response", "1. request-response", "{C67FFCBE-103A-468C-816C-E263D42A0498}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stateless-queues", "stateless-queues", "{D3795032-7A08-413B-9E66-5ED02BD5D16E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. stateless-queues", "2. stateless-queues", "{D3795032-7A08-413B-9E66-5ED02BD5D16E}"
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Stateless_Queues", "stateless-queues\Stateless-Queues\Stateless_Queues.sfproj", "{89BE4C84-343E-4A0E-A5CE-03E462682B19}"
 EndProject
@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Back_Stateless", "stateless
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messages_Stateless", "stateless-queues\Messages_Stateless\Messages_Stateless.csproj", "{7CB8F477-74F2-45EE-9014-8BD02F1E8083}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stateful-queues", "stateful-queues", "{92D8A4CF-A8C9-49BA-9C77-CE5ADE0113BA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. stateful-queues", "3. stateful-queues", "{92D8A4CF-A8C9-49BA-9C77-CE5ADE0113BA}"
 EndProject
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Stateful_Queues", "stateful-queues\Stateful-Queues\Stateful_Queues.sfproj", "{07D63893-DF05-4EF0-A1C9-A13B88EDCEF1}"
 EndProject
