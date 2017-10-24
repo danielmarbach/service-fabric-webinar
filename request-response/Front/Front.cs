@@ -31,7 +31,7 @@ namespace Front
                                         services => services
                                             .AddSingleton(serviceContext)
                                             .AddSingleton(new FabricClient())
-                                            // TODO: 1.6
+                                            // TODO: 1.5
                                             .AddSingleton(new HttpClient(new HttpServiceClientHandler())))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
