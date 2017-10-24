@@ -23,6 +23,7 @@ namespace Front.Controllers
             backServiceUri = uriBuilder.Build();
         }
 
+        // TODO: 1.1
         public async Task<IActionResult> Index()
         {
             Uri getUrl = new HttpServiceUriBuilder()
@@ -50,6 +51,7 @@ namespace Front.Controllers
             return View(model);
         }
 
+        // TODO: 1.2
         [HttpPost]
         public async Task<IActionResult> Order()
         {

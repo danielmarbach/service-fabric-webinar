@@ -18,12 +18,14 @@ namespace Back.Controllers
             orderContext = context;
         }
 
+        // TODO: 1.3
         [HttpGet]
         public Task<List<Order>> Orders()
         {
             return orderContext.Orders.OrderBy(o => o.SubmittedOn).ToListAsync();
         }
 
+        // TODO: 1.4
         // PUT api/orders/
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] CreateOrderRequest newOrder)
