@@ -26,6 +26,7 @@ namespace Front_Stateless
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
 
+            // TODO: 2.3
             var routing = transport.Routing();
             routing.RouteToEndpoint(typeof(SubmitOrder), "back-stateless");
 

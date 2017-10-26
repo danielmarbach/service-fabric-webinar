@@ -52,7 +52,7 @@ namespace Front_Stateless.Controllers
             return View(model);
         }
 
-
+        // TODO: 2.1
         [HttpPost]
         public async Task<IActionResult> Order()
         {

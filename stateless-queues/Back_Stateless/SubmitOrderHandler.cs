@@ -4,6 +4,7 @@ using NServiceBus;
 
 namespace Back_Stateless
 {
+    // TODO: 2.2
     public class SubmitOrderHandler : IHandleMessages<SubmitOrder>
     {
         public SubmitOrderHandler(OrderContext orderContext)
