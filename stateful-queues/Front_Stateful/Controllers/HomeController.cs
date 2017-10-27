@@ -27,6 +27,7 @@ namespace Front_Stateful.Controllers
             backServiceUri = uriBuilder.Build();
         }
 
+        // TODO: 3.1
         public async Task<IActionResult> Index()
         {
             var partitions = await fabricClient.QueryManager.GetPartitionListAsync(backServiceUri);
@@ -97,6 +98,7 @@ namespace Front_Stateful.Controllers
             return View(model);
         }
 
+        // TODO: 3.2
         [HttpPost]
         public async Task<IActionResult> Cancel(Guid orderId)
         {

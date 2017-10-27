@@ -17,6 +17,7 @@ namespace Back_Stateful.Controllers
             this.applicationLifetime = applicationLifetime;
         }
 
+        // TODO: 3.6
         [HttpGet]
         public async Task<IEnumerable<Order>> Orders()
         {

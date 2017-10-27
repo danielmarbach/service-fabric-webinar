@@ -7,26 +7,28 @@ namespace Front_Stateless
 {
     public static class NServiceBusServiceCollectionExtensions
     {
+        // TODO: 2.3
         public static void AddNServiceBus(this IServiceCollection services)
         {
             var endpointConfiguration = new EndpointConfiguration("front-stateless");
+            endpointConfiguration.SendOnly();
+            var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+
+            #region Not Important
 
             endpointConfiguration.UseSerialization<JsonSerializer>();
             endpointConfiguration.EnableInstallers();
-            endpointConfiguration.SendOnly();
-
             var provider = services.BuildServiceProvider();
             var context = provider.GetService<StatelessServiceContext>();
-
             var connectionString = context.GetTransportConnectionString();
 
-            var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
             transport.ConnectionString(connectionString);
-
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
 
-            // TODO: 2.3
+            #endregion
+
+            
             var routing = transport.Routing();
             routing.RouteToEndpoint(typeof(SubmitOrder), "back-stateless");
 

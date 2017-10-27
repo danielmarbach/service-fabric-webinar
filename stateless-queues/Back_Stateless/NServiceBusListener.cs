@@ -8,6 +8,7 @@ using NServiceBus;
 
 namespace Back_Stateless
 {
+    // TODO: 2.4
     public class NServiceBusListener :
         ICommunicationListener
     {
@@ -19,6 +20,9 @@ namespace Back_Stateless
         public Task<string> OpenAsync(CancellationToken cancellationToken)
         {
             endpointConfiguration = new EndpointConfiguration("back-stateless");
+            var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+
+            #region Not Important
 
             endpointConfiguration.SendFailedMessagesTo("error");
             endpointConfiguration.AuditProcessedMessagesTo("audit");
@@ -35,7 +39,6 @@ namespace Back_Stateless
 
             var transportConnectionString = context.GetTransportConnectionString();
 
-            var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
             transport.ConnectionString(transportConnectionString);
 
             var delayedDelivery = transport.DelayedDelivery();
@@ -47,11 +50,15 @@ namespace Back_Stateless
             builder.UseSqlServer(sqlServerConnectionString);
             endpointConfiguration.RegisterComponents(c => c.ConfigureComponent(() => new OrderContext(builder.Options), DependencyLifecycle.InstancePerUnitOfWork));
 
+            #endregion
+
             return Task.FromResult(default(string));
         }
 
         public async Task Run()
         {
+            #region Not Important
+
             if (endpointConfiguration == null)
             {
                 var message =
@@ -59,6 +66,8 @@ namespace Back_Stateless
 
                 throw new Exception(message);
             }
+
+                #endregion
 
             endpointInstance = await Endpoint.Start(endpointConfiguration)
                 .ConfigureAwait(false);

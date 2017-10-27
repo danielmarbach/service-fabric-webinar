@@ -7,6 +7,7 @@ using NServiceBus.Persistence.ServiceFabric;
 
 namespace Back_Stateful
 {
+    // TODO: 3.6
     public class OrderAcceptedHandler : IHandleMessages<OrderAccepted>
     {
         public async Task Handle(OrderAccepted message, IMessageHandlerContext context)
