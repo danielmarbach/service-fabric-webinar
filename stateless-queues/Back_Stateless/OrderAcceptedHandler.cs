@@ -12,6 +12,10 @@ namespace Back_Stateless
             using (var orderContext = context.SynchronizedStorageSession.FromCurrentSession())
             {
                 var order = await orderContext.Orders.SingleOrDefaultAsync(o => o.OrderId == message.OrderId);
+                if (order == null)
+                {
+                    return;
+                }
                 order.Accepted = true;
                 await orderContext.SaveChangesAsync();
             }
