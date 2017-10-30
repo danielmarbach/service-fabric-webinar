@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Fabric;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,20 @@ namespace Front_Stateless.Controllers
     {
         public HomeController(IMessageSession session, FabricClient fabricClient, HttpClient httpClient, IApplicationLifetime appLifetime)
         {
+            #region Same as before
+
             this.httpClient = httpClient;
             applicationLifetime = appLifetime;
-            messageSession = session;
 
             var uriBuilder = new ServiceUriBuilder("Back_Stateless");
             backServiceUri = uriBuilder.Build();
+
+                #endregion
+
+            messageSession = session;
         }
+
+        #region Same as before
 
         public async Task<IActionResult> Index()
         {
@@ -35,7 +43,7 @@ namespace Front_Stateless.Controllers
 
             var response = await httpClient.GetAsync(getUrl, applicationLifetime.ApplicationStopping);
 
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 return StatusCode((int)response.StatusCode);
             }
@@ -51,6 +59,8 @@ namespace Front_Stateless.Controllers
 
             return View(model);
         }
+
+            #endregion
 
         // TODO: 2.1
         [HttpPost]
@@ -82,15 +92,20 @@ namespace Front_Stateless.Controllers
             return View(model);
         }
 
+        #region Not important
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        IMessageSession messageSession;
 
         IApplicationLifetime applicationLifetime;
         Uri backServiceUri;
         HttpClient httpClient;
+
+            #endregion
+
+        IMessageSession messageSession;
     }
 }

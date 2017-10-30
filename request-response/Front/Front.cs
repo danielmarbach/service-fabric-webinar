@@ -31,8 +31,8 @@ namespace Front
                                         services => services
                                             .AddSingleton(serviceContext)
                                             .AddSingleton(new FabricClient())
-                                            // TODO: 1.5
-                                            .AddSingleton(new HttpClient(new HttpServiceClientHandler())))
+                                            // TODO: 1.4
+                                            .AddSingleton(new HttpClient(new MagicHttpHandlerThatUsesFabricDnsToResolveServiceEndpointsWithRetries())))
                                     .UseContentRoot(Directory.GetCurrentDirectory())
                                     .UseStartup<Startup>()
                                     .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)

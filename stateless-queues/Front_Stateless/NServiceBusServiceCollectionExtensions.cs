@@ -27,7 +27,6 @@ namespace Front_Stateless
             delayedDelivery.DisableTimeoutManager();
 
             #endregion
-
             
             var routing = transport.Routing();
             routing.RouteToEndpoint(typeof(SubmitOrder), "back-stateless");

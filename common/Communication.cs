@@ -245,13 +245,13 @@ public enum HttpServiceUriTarget
     Any
 }
 
-public class HttpServiceClientHandler : HttpClientHandler
+public class MagicHttpHandlerThatUsesFabricDnsToResolveServiceEndpointsWithRetries : HttpClientHandler
 {
     private const int MaxRetries = 5;
     private const int InitialRetryDelayMs = 25;
     private readonly Random random = new Random();
 
-    public HttpServiceClientHandler()
+    public MagicHttpHandlerThatUsesFabricDnsToResolveServiceEndpointsWithRetries()
     {
     }
 
