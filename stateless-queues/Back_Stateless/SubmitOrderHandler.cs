@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Messages_Stateless;
-using Microsoft.EntityFrameworkCore;
 using NServiceBus;
 
 namespace Back_Stateless
@@ -10,13 +9,8 @@ namespace Back_Stateless
     {
         public async Task Handle(SubmitOrder message, IMessageHandlerContext context)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<OrderContext>();
-            var sqlPersistenceSession = context.SynchronizedStorageSession.SqlPersistenceSession();
-            optionsBuilder.UseSqlServer(sqlPersistenceSession.Connection);
-
-            using (var orderContext = new OrderContext(optionsBuilder.Options))
+            using (var orderContext = context.SynchronizedStorageSession.FromCurrentSession())
             {
-                orderContext.Database.UseTransaction(sqlPersistenceSession.Transaction);
                 var order = message.ToOrder();
                 orderContext.Orders.Add(order);
 
