@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Client;
 using Newtonsoft.Json.Linq;
 
+/// <summary>
+/// https://github.com/Azure-Samples/service-fabric-dotnet-iot/blob/master/src/Iot.Common
+/// </summary>
 public class ServiceUriBuilder
 {
     public ServiceUriBuilder(string serviceInstance)
