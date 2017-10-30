@@ -10,7 +10,7 @@ using NServiceBus.Persistence.Sql;
 
 namespace Back_Stateless
 {
-    // TODO: 2.4
+    // TODO: 2.9
     public class NServiceBusListener :
         ICommunicationListener
     {

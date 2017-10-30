@@ -5,6 +5,7 @@ using NServiceBus;
 
 namespace Back_Stateless
 {
+    // TODO: 2.7
     public class OrderAcceptedHandler : IHandleMessages<OrderAccepted>
     {
         public async Task Handle(OrderAccepted message, IMessageHandlerContext context)

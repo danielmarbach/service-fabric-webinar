@@ -21,20 +21,20 @@ namespace Back_Stateful
             this.context = context;
         }
 
-        // TODO: 3.9
+        // TODO: 3.6 - Receiver Side Distribution
         public async Task<string> OpenAsync(CancellationToken cancellationToken)
         {
-            #region Not Important
-
             endpointConfiguration = new EndpointConfiguration("back-stateful");
+            var persistence = endpointConfiguration.UsePersistence<ServiceFabricPersistence>();
+            persistence.StateManager(stateManager);
+
+            #region Not Important
 
             endpointConfiguration.SendFailedMessagesTo("error");
             endpointConfiguration.AuditProcessedMessagesTo("audit");
             endpointConfiguration.UseSerialization<JsonSerializer>();
             endpointConfiguration.EnableInstallers();
 
-            var persistence = endpointConfiguration.UsePersistence<ServiceFabricPersistence>();
-            persistence.StateManager(stateManager);
 
             var recoverability = endpointConfiguration.Recoverability();
             recoverability.DisableLegacyRetriesSatellite();

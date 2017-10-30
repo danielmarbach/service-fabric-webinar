@@ -92,6 +92,9 @@ namespace Front_Stateless.Controllers
             return View(model);
         }
 
+        #region Not important
+
+
         [HttpPost]
         public async Task<IActionResult> Cancel(Guid orderId)
         {
@@ -102,8 +105,6 @@ namespace Front_Stateless.Controllers
 
             return RedirectToAction("Index");
         }
-
-        #region Not important
 
         public IActionResult Error()
         {

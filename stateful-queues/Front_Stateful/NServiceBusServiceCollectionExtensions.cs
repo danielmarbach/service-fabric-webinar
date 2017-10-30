@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Fabric;
 using System.Linq;
 using Messages_Stateful;
@@ -11,7 +10,7 @@ namespace Front_Stateful
 {
     public static class NServiceBusServiceCollectionExtensions
     {
-        // TODO: 3.8
+        // TODO: 3.5 - Sender Side Distribution
         public static void AddNServiceBus(this IServiceCollection services)
         {
             var endpointConfiguration = new EndpointConfiguration("front-stateful");

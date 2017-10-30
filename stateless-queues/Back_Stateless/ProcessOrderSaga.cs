@@ -6,6 +6,7 @@ using NServiceBus.Persistence.Sql;
 
 namespace Back_Stateless
 {
+    // TODO: 2.4
     public class ProcessOrderSaga :
         SqlSaga<ProcessOrderSaga.OrderData>,
         IAmStartedByMessages<SubmitOrder>,
@@ -13,6 +14,7 @@ namespace Back_Stateless
         IHandleMessages<CancelOrder>,
         IHandleTimeouts<ProcessOrderSaga.BuyersRemorseIsOver>
     {
+        // TODO: 2.5
         public Task Handle(SubmitOrder message, IMessageHandlerContext context)
         {
             Data.OrderId = message.OrderId;
@@ -20,6 +22,7 @@ namespace Back_Stateless
             return RequestTimeout(context, TimeSpan.FromSeconds(10), new BuyersRemorseIsOver());
         }
 
+        // TODO: 2.6
         public Task Timeout(BuyersRemorseIsOver state, IMessageHandlerContext context)
         {
             MarkAsComplete();

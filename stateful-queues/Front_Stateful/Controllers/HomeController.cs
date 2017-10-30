@@ -98,7 +98,6 @@ namespace Front_Stateful.Controllers
             return View(model);
         }
 
-        // TODO: 3.2
         [HttpPost]
         public async Task<IActionResult> Cancel(Guid orderId)
         {

@@ -7,7 +7,7 @@ namespace Front_Stateless
 {
     public static class NServiceBusServiceCollectionExtensions
     {
-        // TODO: 2.3
+        // TODO: 2.8
         public static void AddNServiceBus(this IServiceCollection services)
         {
             var endpointConfiguration = new EndpointConfiguration("front-stateless");
