@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.ServiceFabric.Services.Runtime;
+using NServiceBus.Persistence.Sql;
+
+[assembly: SqlPersistenceSettings(MsSqlServerScripts = true, ScriptPromotionPath = "$(SolutionDir)PromotedSqlScripts")]
 
 namespace Back_Stateless
 {

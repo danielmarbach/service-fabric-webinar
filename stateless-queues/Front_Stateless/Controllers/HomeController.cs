@@ -92,6 +92,17 @@ namespace Front_Stateless.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Cancel(Guid orderId)
+        {
+            await messageSession.Send(new CancelOrder
+            {
+                OrderId = orderId,
+            });
+
+            return RedirectToAction("Index");
+        }
+
         #region Not important
 
         public IActionResult Error()

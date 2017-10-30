@@ -31,6 +31,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Messages_Stateless\Messages_Stateless.csproj" />
     <PackageReference Include="NServiceBus" Version="6.4.0" />
+    <PackageReference Include="NServiceBus.Persistence.Sql" Version="2.1.4" />
+    <PackageReference Include="NServiceBus.Persistence.Sql.MsBuild" Version="2.1.4" />
     <PackageReference Include="NServiceBus.RabbitMQ" Version="4.4.0" />
   </ItemGroup>
 

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using NServiceBus;
+using NServiceBus.Persistence.Sql;
 
 namespace Back_Stateless
 {
@@ -29,8 +31,6 @@ namespace Back_Stateless
             endpointConfiguration.UseSerialization<JsonSerializer>();
             endpointConfiguration.EnableInstallers();
 
-            endpointConfiguration.UsePersistence<InMemoryPersistence>();
-
             var recoverability = endpointConfiguration.Recoverability();
             recoverability.DisableLegacyRetriesSatellite();
             // for demo purposes
@@ -49,6 +49,12 @@ namespace Back_Stateless
             var builder = new DbContextOptionsBuilder<OrderContext>();
             builder.UseSqlServer(sqlServerConnectionString);
             endpointConfiguration.RegisterComponents(c => c.ConfigureComponent(() => new OrderContext(builder.Options), DependencyLifecycle.InstancePerUnitOfWork));
+
+            var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
+            persistence.SqlVariant(SqlVariant.MsSqlServer);
+            persistence.ConnectionBuilder(() => new SqlConnection(sqlServerConnectionString));
+            persistence.Schema("dbo");
+            persistence.TablePrefix("");
 
             #endregion
 

@@ -12,5 +12,7 @@ namespace Back_Stateless
             get => CreatedOn;
             set => CreatedOn = value;
         }
+
+        public bool Accepted { get; set; }
     }
 }

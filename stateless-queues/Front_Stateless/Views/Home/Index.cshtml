@@ -30,6 +30,17 @@
                         <th scope="row">@order.OrderId</th>
                         <td>@order.SubmittedOn.ToString("yyyy-MM-dd HH:mm:ss")</td>
                         <td>@order.ProcessedOn.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>
+                            @if (!order.Accepted)
+                            {
+                                using (Html.BeginForm("Cancel", "Home", new { order.OrderId }, FormMethod.Post))
+                                {
+                                    <button type="submit" class="btn btn-warning btn-sm">
+                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Cancel
+                                    </button>
+                                }
+                            }
+                        </td>
                     </tr>
                 }
                 </tbody>

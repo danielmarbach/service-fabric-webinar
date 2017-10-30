@@ -29,7 +29,9 @@ namespace Front_Stateless
             #endregion
             
             var routing = transport.Routing();
-            routing.RouteToEndpoint(typeof(SubmitOrder), "back-stateless");
+            var backStateless = "back-stateless";
+            routing.RouteToEndpoint(typeof(SubmitOrder), backStateless);
+            routing.RouteToEndpoint(typeof(CancelOrder), backStateless);
 
             var endpointInstance = Endpoint.Start(endpointConfiguration).GetAwaiter().GetResult();
             services.AddSingleton<IMessageSession>(endpointInstance);
