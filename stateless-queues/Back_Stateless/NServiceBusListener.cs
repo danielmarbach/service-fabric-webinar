@@ -23,6 +23,7 @@ namespace Back_Stateless
         {
             endpointConfiguration = new EndpointConfiguration("back-stateless");
             var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+            var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
 
             #region Not Important
 
@@ -49,8 +50,7 @@ namespace Back_Stateless
             var builder = new DbContextOptionsBuilder<OrderContext>();
             builder.UseSqlServer(sqlServerConnectionString);
             endpointConfiguration.RegisterComponents(c => c.ConfigureComponent(() => new OrderContext(builder.Options), DependencyLifecycle.InstancePerUnitOfWork));
-
-            var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
+            
             persistence.SqlVariant(SqlVariant.MsSqlServer);
             persistence.ConnectionBuilder(() => new SqlConnection(sqlServerConnectionString));
             persistence.Schema("dbo");
