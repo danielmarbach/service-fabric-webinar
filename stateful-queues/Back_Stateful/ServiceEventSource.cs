@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Back_Stateful
 {
-    [EventSource(Name = "Stateful_Queues-Back")]
+    [EventSource(Name = "stateful-queues-back")]
     internal sealed class ServiceEventSource : EventSource
     {
         public static readonly ServiceEventSource Current = new ServiceEventSource();

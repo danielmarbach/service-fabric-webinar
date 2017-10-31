@@ -56,6 +56,11 @@ namespace Back_Stateless
             persistence.Schema("dbo");
             persistence.TablePrefix("");
 
+            endpointConfiguration.Notifications.Errors.MessageHasFailedAnImmediateRetryAttempt += (sender, args) =>
+            {
+                ServiceEventSource.Current.ServiceMessage(context, "{0} - {1}", "back-stateless", args.Exception.Message);
+            };
+
             #endregion
 
             return Task.FromResult(default(string));

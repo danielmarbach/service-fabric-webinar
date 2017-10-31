@@ -53,6 +53,12 @@ namespace Back_Stateful
             var routing = transport.Routing();
             routing.RouteToEndpoint(typeof(UpdateOrderColdStorage), "back-cold");
 
+            endpointConfiguration.Notifications.Errors.MessageHasFailedAnImmediateRetryAttempt += (sender, args) =>
+            {
+                args.Headers.TryGetValue(Headers.ProcessingEndpoint, out var endpointName);
+                ServiceEventSource.Current.ServiceMessage(context, "{0} - {1}", endpointName ?? "back-stateful", args.Exception.Message);
+            };
+
             #endregion
 
             var partitionInfo =
