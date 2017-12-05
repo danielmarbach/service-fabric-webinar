@@ -11,6 +11,7 @@
     <Compile Include="..\..\common\ConnectionStringHelper.cs" Link="ConnectionStringHelper.cs" />
     <Compile Include="..\..\common\CombGuid.cs" Link="CombGuid.cs" />
     <Compile Include="..\..\common\CRC64.cs" Link="CRC64.cs" />
+    <Compile Include="..\..\common\DeterministicIdBuilder.cs" Link="DeterministicIdBuilder.cs" />
   </ItemGroup>
 
   <ItemGroup>

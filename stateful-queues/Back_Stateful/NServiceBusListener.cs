@@ -70,10 +70,17 @@ namespace Back_Stateful
                 frequency: TimeSpan.FromSeconds(5),
                 timeToLive: TimeSpan.FromSeconds(15));
 
-            var hostInfo = endpointConfiguration
-                .UniquelyIdentifyRunningInstance();
-            hostInfo
-                .UsingCustomDisplayName(partitionInfo.LocalPartitionKey.HasValue ? $"back-stateful-{partitionInfo.LocalPartitionKey}" : "back-stateful");
+            var instanceId = partitionInfo.LocalPartitionKey.HasValue ? $"back-stateful-{partitionInfo.LocalPartitionKey}" : "back-stateful";
+
+            var hostInfo = endpointConfiguration.UniquelyIdentifyRunningInstance();
+            hostInfo.UsingCustomDisplayName(instanceId);
+            hostInfo.UsingCustomIdentifier(DeterministicIdBuilder.ToGuid(instanceId));
+
+            var metrics = endpointConfiguration.EnableMetrics();
+
+            metrics.SendMetricDataToServiceControl(
+                serviceControlMetricsAddress: "Particular.Monitoring.RabbitMQ",
+                interval: TimeSpan.FromSeconds(5));
 
             string ConvertOrderIdToPartitionLowKey(Guid orderId)
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Fabric;
 using System.Linq;
+using System.Text;
 using Messages_Stateful;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services;
@@ -49,10 +50,11 @@ namespace Front_Stateful
                 frequency: TimeSpan.FromSeconds(5),
                 timeToLive: TimeSpan.FromSeconds(15));
 
-            var hostInfo = endpointConfiguration
-                .UniquelyIdentifyRunningInstance();
-            hostInfo
-                .UsingCustomDisplayName(partitionInfo.LocalPartitionKey.HasValue ? $"front-stateful-{partitionInfo.LocalPartitionKey}" : "front-stateful");
+            var instanceId = partitionInfo.LocalPartitionKey.HasValue ? $"front-stateful-{partitionInfo.LocalPartitionKey}" : "front-stateful";
+
+            var hostInfo = endpointConfiguration.UniquelyIdentifyRunningInstance();
+            hostInfo.UsingCustomDisplayName(instanceId);
+            hostInfo.UsingCustomIdentifier(DeterministicIdBuilder.ToGuid(instanceId));
 
             string ConvertOrderIdToPartitionLowKey(Guid orderId)
             {
