@@ -65,6 +65,16 @@ namespace Back_Stateful
                 await ServicePartitionQueryHelper.QueryServicePartitions(context.ServiceName, context.PartitionId);
             endpointConfiguration.RegisterPartitionsForThisEndpoint(partitionInfo.LocalPartitionKey?.ToString(), partitionInfo.Partitions.Select(k => k.LowKey.ToString()).ToArray());
 
+            endpointConfiguration.SendHeartbeatTo(
+                serviceControlQueue: "Particular.ServiceControl.Rabbit",
+                frequency: TimeSpan.FromSeconds(5),
+                timeToLive: TimeSpan.FromSeconds(15));
+
+            var hostInfo = endpointConfiguration
+                .UniquelyIdentifyRunningInstance();
+            hostInfo
+                .UsingCustomDisplayName(partitionInfo.LocalPartitionKey.HasValue ? $"back-stateful-{partitionInfo.LocalPartitionKey}" : "back-stateful");
+
             string ConvertOrderIdToPartitionLowKey(Guid orderId)
             {
                 var key = CRC64.ToCRC64(orderId.ToByteArray());

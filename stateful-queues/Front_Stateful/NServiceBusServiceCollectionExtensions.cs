@@ -44,6 +44,16 @@ namespace Front_Stateful
 
             var partitionInfo = ServicePartitionQueryHelper.QueryServicePartitions(backServiceUri, Guid.Empty).GetAwaiter().GetResult();
 
+            endpointConfiguration.SendHeartbeatTo(
+                serviceControlQueue: "Particular.ServiceControl.Rabbit",
+                frequency: TimeSpan.FromSeconds(5),
+                timeToLive: TimeSpan.FromSeconds(15));
+
+            var hostInfo = endpointConfiguration
+                .UniquelyIdentifyRunningInstance();
+            hostInfo
+                .UsingCustomDisplayName(partitionInfo.LocalPartitionKey.HasValue ? $"front-stateful-{partitionInfo.LocalPartitionKey}" : "front-stateful");
+
             string ConvertOrderIdToPartitionLowKey(Guid orderId)
             {
                 var key = CRC64.ToCRC64(orderId.ToByteArray());
