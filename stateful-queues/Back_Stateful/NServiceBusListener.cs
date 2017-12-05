@@ -80,7 +80,8 @@ namespace Back_Stateful
 
             metrics.SendMetricDataToServiceControl(
                 serviceControlMetricsAddress: "Particular.Monitoring.RabbitMQ",
-                interval: TimeSpan.FromSeconds(5));
+                interval: TimeSpan.FromSeconds(5),
+                instanceId: instanceId);
 
             string ConvertOrderIdToPartitionLowKey(Guid orderId)
             {
