@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ServiceFabric" Version="6.0.211" />
-    <PackageReference Include="NServiceBus" Version="6.4.0" />
+    <PackageReference Include="NServiceBus" Version="6.4.3" />
   </ItemGroup>
 
 </Project>
