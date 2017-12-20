@@ -33,6 +33,9 @@ namespace Front_Stateful
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
 
+            var assemblyScanner = endpointConfiguration.AssemblyScanner();
+            assemblyScanner.ExcludeAssemblies("netstandard");
+
             #endregion
 
             var routing = transport.Routing();

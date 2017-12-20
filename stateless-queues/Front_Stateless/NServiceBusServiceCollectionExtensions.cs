@@ -26,8 +26,11 @@ namespace Front_Stateless
             var delayedDelivery = transport.DelayedDelivery();
             delayedDelivery.DisableTimeoutManager();
 
+            var assemblyScanner = endpointConfiguration.AssemblyScanner();
+            assemblyScanner.ExcludeAssemblies("netstandard");
+
             #endregion
-            
+
             var routing = transport.Routing();
             var backStateless = "back-stateless";
             routing.RouteToEndpoint(typeof(SubmitOrder), backStateless);

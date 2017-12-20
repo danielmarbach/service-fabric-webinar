@@ -61,6 +61,9 @@ namespace Back_Stateless
                 ServiceEventSource.Current.ServiceMessage(context, "{0} - {1}", "back-stateless", args.Exception.Message);
             };
 
+            var assemblyScanner = endpointConfiguration.AssemblyScanner();
+            assemblyScanner.ExcludeAssemblies("netstandard");
+
             #endregion
 
             return Task.FromResult(default(string));

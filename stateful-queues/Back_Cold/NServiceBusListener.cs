@@ -37,6 +37,9 @@ namespace Back_Cold
             recoverability.Immediate(d => d.NumberOfRetries(5));
             recoverability.Delayed(d => d.NumberOfRetries(0));
 
+            var assemblyScanner = endpointConfiguration.AssemblyScanner();
+            assemblyScanner.ExcludeAssemblies("netstandard");
+
             var transportConnectionString = context.GetTransportConnectionString();
 
             var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();

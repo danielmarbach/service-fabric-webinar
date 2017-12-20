@@ -59,6 +59,9 @@ namespace Back_Stateful
                 ServiceEventSource.Current.ServiceMessage(context, "{0} - {1}", endpointName ?? "back-stateful", args.Exception.Message);
             };
 
+            var assemblyScanner = endpointConfiguration.AssemblyScanner();
+            assemblyScanner.ExcludeAssemblies("netstandard");
+
             #endregion
 
             var partitionInfo =
