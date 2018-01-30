@@ -4,6 +4,6 @@
     <Parameter Name="Back_Stateless_InstanceCount" Value="-1" />
     <Parameter Name="Front_Stateless_InstanceCount" Value="1" />
     <Parameter Name="NServiceBus_ConnectionString" Value="host=localhost" />
-    <Parameter Name="SqlServer_ConnectionString" Value="Data Source=(localdb)\.\service-fabric-webinar;Initial Catalog=statelessqueues;Integrated Security=True;" />
+    <Parameter Name="SqlServer_ConnectionString" Value="Data Source=.\SQLEXPRESS2017;Initial Catalog=statelessqueues;Integrated Security=True;" />
   </Parameters>
 </Application>
